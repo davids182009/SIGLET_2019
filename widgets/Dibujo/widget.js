@@ -90,16 +90,12 @@ define([
         this.arregloEliminados.push(graficos[tamanoGraficos - 1]);
         this.layer.remove(graficos[tamanoGraficos - 1]);
       }
-      console.log(this.arregloEliminados);
-      // console.log(graficos[tamanoGraficos]);
     },
     rehacerDibujo: function() {
       let tamanoEliminados = this.arregloEliminados.length;
       this.incremento = tamanoEliminados;
 
       if (tamanoEliminados > 0) {
-        console.log(this.layer.graphics.length);
-        console.log(this.arregloEliminados);
         this.layer.add(this.arregloEliminados[tamanoEliminados - 1]);
         this.arregloEliminados.splice(tamanoEliminados - 1, 1);
       }
