@@ -1,0 +1,392 @@
+.logo{
+    z-index: 2;
+    position: absolute;
+    right: 0px;    
+    top: 0px;
+}
+
+.menu{
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 0;    
+}
+
+    .boxMenu{
+        height: 100vh;
+        width: 0px;
+        display: flex;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        flex-direction: column;
+        -ms-flex-direction: column ;
+        -webkit-flex-direction: column ;
+        -moz-flex-direction: column ;
+    }
+
+        .boxMenu_options{
+            flex: 0 0 40px;
+            -webkit-flex: 0 0 40px;
+            -moz-flex: 0 0 40px;
+            -ms-flex: 0 0 40px;
+        }
+            .boxMenu_options > ul{
+                height: 40px;
+                width: 200px;
+                font-size: 0;
+                display: flex;
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+            }
+            .boxMenu_options > ul > li:nth-child(1){
+                flex: 0 0 40px;
+                -webkit-flex: 0 0 40px;
+                -moz-flex: 0 0 40px;
+                -ms-flex: 0 0 40px;
+            }
+            .boxMenu_options > ul > li:nth-child(2){
+                flex: auto;
+                -webkit-flex: auto;
+                -moz-flex: auto;
+                -ms-flex: auto;
+                position: relative;
+            }
+            .boxMenu_options > ul > li:nth-child(2) > nav{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                transition:  all .3s ease-in;
+            }
+            .hide_top{
+                transform: translateY(-100%);
+            }
+            .boxMenu_options > ul > li{
+                font-size: 14px;
+                margin: 0px;
+                padding: 0px;    
+                list-style: none;
+                height: 40px;
+                display: inline-block;
+            }
+                .btn_options_open{
+                    background-image: url(images/Menu-cerrado.png);
+                    background-size: cover;
+                }
+                .btn_options_open_animated{
+                    background-image: url(images/abrir.gif);
+                    background-size: cover;
+                }
+                .btn_options_open:hover{
+                    background-image: url(images/menu-cerrado-over.png);
+                }
+                .btn_options_close{
+                    background-image: url(images/menu-abierto.png);
+                    background-size: cover;
+                }
+                .btn_options_close_animated{
+                    background-image: url(images/cerrar.gif);
+                    background-size: cover;
+                }
+                .btn_options_close:hover{
+                    background-image: url(images/menu-abierto-over.png);
+                }
+        .boxMenu_content{
+            flex: auto;
+            -webkit-flex: auto;
+            -moz-flex: auto;
+            -ms-flex: auto;
+            width: 0px;
+            background-color:#FFFFFF;
+            position: relative;            
+        }
+            .boxMenu_content_dock{
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 0px;                
+                margin: 0px;
+                padding: 0px;
+                z-index: 3;
+            }
+                .boxMenu_content_dock > li.destroying{
+                    animation: destroyDockElement .5s ease-in-out 0s normal  1 forwards;
+                }
+                @keyframes destroyDockElement{
+                    0%{
+                        transform: scale(1);
+                    }
+                    100%{
+                        transform: scale(0.1);
+                    }
+                }
+                .boxMenu_content_dock > li{
+                    padding: 0px;
+                    margin: 0px;
+                    list-style: none;
+                    width: 38px;
+                    height: 38px;
+                    background: #3090AC;                          
+                    border-radius: 2px;
+                    margin-top: 2px;
+                    margin-left: 2px;
+                    cursor: pointer;
+                    transition: all .1s ease-in;
+                    box-shadow: 0 1px 2px 1px rgba(0,0,0,.3);
+                    text-align: center;                
+                }
+                .boxMenu_content_dock > li:hover{
+                    margin-left: 8px;
+                }
+                .boxMenu_content_dock > li.selected{
+                    margin-left: 5px;
+                    border-left: 5px solid #00636B;
+                    box-sizing: content-box;
+                }
+                    .boxMenu_content_dock > li > img{
+                        margin-top: 10%;
+                        height: 80%;
+                        width: auto;
+                        border-radius: 50%;                
+                    }
+            .boxMenu_content_inner{
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 350px;
+                height: 100%;                                
+                box-shadow: 0 5px 5px 1px black;
+                transition: all .3s ease-in;                 
+              
+            }   
+            
+            .box_content_widget{
+                z-index: 1;
+            }
+
+            .box_content_options{
+                z-index: 2;
+            }
+            
+                .boxMenu_content_inner_canvas{
+                    display: flex;
+                    display: -webkit-flex;
+                    display: -moz-flex;
+                    display: -ms-flex;
+                    flex-direction: column;
+                    -ms-flex-direction: column ;
+                    -webkit-flex-direction: column ;
+                    -moz-flex-direction: column ;
+                    width: 100%;
+                    height: 100%;
+                                                            
+                }
+            .hide_left{
+                transform: translate(-110%)
+            }
+            .BC_head{
+                flex: 0 0 20px;
+                -webkit-flex: 0 0 20px;
+                -moz-flex: 0 0 20px;
+                -ms-flex: 0 0 20px;
+                width: 100%;                
+                display: flex;
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                flex-direction: row;
+                -ms-flex-direction: row ;
+                -webkit-flex-direction: row ;
+                -moz-flex-direction: row ;
+            }            
+                .BC_head_left{
+                    flex: 1;
+                    -webkit-flex: 1;
+                    -moz-flex: 1;
+                    -ms-flex: 1;                        
+                    height: 100%;
+                }
+                .box_content_widget .BC_head_left{
+                    height: 16px;
+                    background: #3090AC;
+                    background:linear-gradient(to right,#3090AC,#00636B);
+                    background:-webkit-linear-gradient(to right,#3090AC,#00636B);
+                    background:-moz-linear-gradient(to right,#3090AC,#00636B);                    
+                }
+                    .boxMenu_content_left_louver{
+                        width: 100%;
+                        height: 0px;
+                        transition: all .5s ease-in;
+                    }
+                    .widget_content{
+                        width: 100%;
+                        height: 100%;
+                        display: block;
+                        transition: all .5s ease-in;
+                    }
+
+                .BC_head_center{
+                    flex: 0 0 201px;
+                    -webkit-flex: 0 0 201px;
+                    -moz-flex: 0 0 201px;
+                    -ms-flex: 0 0 201px;
+                    text-align: center;
+                    color: #FFFFFF;
+                    font-weight: bold;
+                    overflow: hidden;
+                    height: 20px;
+                    line-height: 20px;
+                }
+                .BC_head_center_widget{
+                    background-image: url(images/cabezote-fondo-herramientas2.png);
+                    background-size: cover;                
+                }
+                .BC_head_right{
+                    flex: 1;
+                    -webkit-flex: 1;
+                    -moz-flex: 1;
+                    -ms-flex: 1;
+                    height: 100%;
+                }
+                .box_content_widget .BC_head_right{
+                    height: 16px;
+                    background: #00636B;
+                    background:linear-gradient(to right,#00636B,#3090AC);
+                    background:-webkit-linear-gradient(to right,#00636B,#3090AC);
+                    background:-moz-linear-gradient(to right,#00636B,#3090AC);
+                }
+                
+            .BC_body{
+                flex: auto;
+                -webkit-flex: auto;
+                -moz-flex: auto;
+                -ms-flex: auto;
+                width: 100%;
+                background-color: #FFFFFF;
+                display: flex;
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                flex-direction: row;
+                -ms-flex-direction: row ;
+                -webkit-flex-direction: row ;
+                -moz-flex-direction: row ;
+                max-height: calc(100% - 20px);
+            }
+                .boxMenu_content_left_blank{
+                    flex: 0 0 50px;
+                    -webkit-flex: 0 0 50px;
+                    -moz-flex: 0 0 50px;
+                    -ms-flex: 0 0 50px;
+                }
+                .boxMenu_content_left{
+                    flex: auto;
+                    -webkit-flex: auto;
+                    -moz-flex: auto;
+                    -ms-flex: auto;                    
+                    margin-top: 20px;
+                    box-sizing: border-box;
+                    background: url('images/Patron-fondo-ventanas.png');
+                    background-repeat:repeat;
+                    background-size: 46px 27px;
+                    max-height: calc(100% - 20px);
+                }   
+                    .boxMenu_options_btn--list{
+                        width: 100%;      
+                        height: 46px;          
+                        display: flex;
+                        display: -webkit-flex;
+                        display: -moz-flex;
+                        display: -ms-flex;
+                        cursor: pointer;
+                        color: #9C9B9B;
+                        font-size: 11pt;
+                        font-weight: bold;
+                        transition: all .2s ease-in;
+                    }   
+                    .boxMenu_options_btn--list:hover{
+                        color: #000000;
+                    }
+
+                    .boxMenu_options_btn--list img{
+                        width: 26px;
+                        height: auto;
+                        margin: 10px;
+                        float: left;                        
+                    }   
+                    .boxMenu_options_btn--list span{
+                        float: left;
+                        flex: auto;
+                        -webkit-flex: auto;
+                        -moz-flex: auto;
+                        -ms-flex: auto;
+                        line-height: 46px;                        
+                    }
+                    .widget_content{
+                        width: 100%;
+                        height: calc(100vh - 80px);
+                        overflow: hidden;
+                    }  
+
+                         
+                .boxMenu_content_right{
+                    flex: 0 0 20px;
+                    -webkit-flex: 0 0 20px;
+                    -moz-flex: 0 0 20px;
+                    -ms-flex: 0 0 20px;
+                    text-align: center;
+                    color: #3090AC;
+
+                }
+                    .boxMenu_content_right_btn{
+                        cursor: pointer;     
+                        font-size: 16px;
+                        font-weight: bold;                   
+                    }
+                    .boxMenu_content_right_btn:hover{
+                        text-shadow: 1px 1px 1px black;
+                    }
+footer{
+    z-index: 2;
+    position: absolute;
+    right: 40px;    
+    top:100vh;
+    transform: translateY(-100%);
+}
+
+
+.buttonBasic{
+    border: 0px;
+    background-color: #3090AC;
+    padding: 5px;
+    margin: 5px 25%;
+    border-radius: 2px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: all .3s ease-in-out;
+}
+
+.buttonBasic:hover{
+    background-color: #00636B;
+}
+
+.loading_Widget{
+    margin-top:50px;
+    margin-left: calc(50% - 25px); 
+}
+
+/*DIJIT DIALOG*/
+.dijitDialogTitleBar{
+    color: white !important;
+    background: #00636B !important ;
+    background: linear-gradient(to right,#00636B,#3090AC) !important;
+    background: -webkit-linear-gradient(to right,#00636B,#3090AC) !important;
+    background: -moz-linear-gradient(to right,#00636B,#3090AC) !important;
+}
+

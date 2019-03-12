@@ -1,0 +1,18 @@
+<div>
+  <div data-dojo-attach-point="mask" class="mask_widget" style="display:none">
+      <img src="images/loading-1.gif"><br>
+      <b>Creando archivo ...</b>
+  </div>
+  <div class="formulario">
+      <h3 class="SourceDataStep" step="1">Seleccione el tipo de papel para la imagen</h3> 
+      <input id="tipoPapel" style="display:block;width: 80%;margin:10px auto;">
+      <br>
+      <h3 class="SourceDataStep" step="2">Seleccione el formato para la imagen</h3>
+      <input id="tipoFormato" style="display:block;width: 80%;margin:10px auto;">
+      <br> 
+      <button data-dojo-attach-event="onclick:exportMap" data-dojo-attach-point="btnExport">Exportar Vista</button>
+      <a href="#" target="_blanck" class="rowResultExport" data-dojo-attach-point="btnArchivoResultado" style="display:none">
+        <i class="icon ion-document"></i> RESULTADO DE EXPORTACIÓN
+      </a>
+  </div>  
+</div>

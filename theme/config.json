@@ -1,0 +1,100 @@
+{
+  "widgetSingle": [{
+      "id": 1,
+      "name": "Explorador de Capas",
+      "version": "1.0",
+      "uri": "widgets/LayerExplorer",
+      "icon": "icon.png",
+      "closable": false,
+      "openOnLoad": true
+    },
+    {
+      "id": 2,
+      "name": "Acto Administrativo limite",
+      "version": "1.0",
+      "uri": "widgets/AnalisisLimites",
+      "icon": "acto-admin.png"
+    }
+  ],
+  "widgetGroup": [{
+      "name": "Consultas",
+      "icon": "consultas.png",
+      "widgets": [
+        {
+          "id": 6,
+          "name": "Identificar",
+          "version": "1.0",
+          "uri": "widgets/Identificar",
+          "icon": "identificar.png"
+        },
+        {
+          "id": 10,
+          "name": "Seleccion Espacial",
+          "version": "1.0",
+          "uri": "widgets/SeleccionEspacial",
+          "icon": "seleccionar.png"
+        },
+        {
+          "id": 12,
+          "name": "Consulta Simple",
+          "version": "2.0",
+          "uri": "widgets/ConsultaSimple",
+          "icon": "consulta-simple.png"
+        }
+      ]
+    },
+    {
+      "name": "Procesos",
+      "icon": "procesos.png",
+      "widgets": [
+        {
+          "id": 4,
+          "name": "Dibujar",
+          "version": "1.0",
+          "uri": "widgets/Dibujo",
+          "icon": "dibujar.png",
+          "top": "30px",
+          "left": "500px"
+        },
+        {
+          "id": 20,
+          "name": "Medir",
+          "version": "1.0",
+          "uri": "widgets/Medir",
+          "icon": "medir.png"
+        }
+      ]
+    },
+    {
+      "name": "Importar",
+      "icon": "importar.png",
+      "widgets": [
+        {
+          "id": 5,
+          "name": "Adicionar Información Geografica",
+          "version": "1.0",
+          "uri": "widgets/AdicionarDatos",
+          "icon": "icon.png"
+        }
+      ]
+    },
+    {
+      "name": "Exportar",
+      "icon": "exportar.png",
+      "widgets": [{
+          "id": 9,
+          "name": "Salida Grafica",
+          "version": "1.0",
+          "uri": "widgets/SalidaGrafica",
+          "icon": "exportar-salida.png"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "basemap": "streets",
+    "center": [-72.275, 4.573],
+    "zoom": 6,
+    "slider": false
+  }
+}

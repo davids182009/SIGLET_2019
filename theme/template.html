@@ -1,0 +1,82 @@
+<div class="menu">      
+    <div class="logo">
+        <img src="theme/images/logo.png">
+    </div>    
+    <div class="boxMenu">
+        <div class="boxMenu_options" >
+            <ul data-dojo-attach-point="box_btns">
+                <li>
+                    <div class="boxMenu_options_btn btn_options_open" data-dojo-attach-point="btn_menu" data-dojo-attach-event="onclick:cambiarVisibilidadBtn"></div>
+                </li>
+                <li>      
+                    <nav class="hide_top" data-dojo-attach-point="list_btn">                        
+                    </nav>                                                    
+                </li>
+            </ul>            
+        </div>
+        <div class="boxMenu_content">
+            <ul class="boxMenu_content_dock" data-dojo-attach-point="dock_widgets">
+
+            </ul>
+            <div class="boxMenu_content_inner hide_left box_content_options" data-dojo-attach-point="box_content_menu">
+                <div class="boxMenu_content_inner_canvas">
+                    <div class="BC_head BGcolorB">
+                        <div class="BC_head_left">            
+                        </div>
+                        <div class="BC_head_center" data-dojo-attach-point="box_content_menu_title">
+                            Menu
+                        </div>
+                        <div class="BC_head_right">
+                        </div>
+                    </div>
+                    <div class="BC_body">
+                        <div class="boxMenu_content_left_blank">
+
+                        </div>
+                        <div  class="boxMenu_content_left">
+                            <div data-dojo-attach-point="Menu_deploy">
+                                
+                            </div>
+                        </div>
+                        <div class="boxMenu_content_right">
+                            <span id="boxMenu_content_right_close" class="boxMenu_content_right_btn" data-dojo-attach-event="onclick:CloseListWidget"><i class="icon ion-android-close"></i></span>
+                        </div>
+                    </div>
+                </div>                
+            </div>      
+            <div class="boxMenu_content_inner hide_left box_content_widget" data-dojo-attach-point="box_content_widget">
+                <div class="boxMenu_content_inner_canvas">
+                    <div class="BC_head BGcolorA">
+                        <div class="BC_head_left">            
+                        </div>
+                        <div class="BC_head_center BC_head_center_widget" data-dojo-attach-point="widget_title">
+                            Widget
+                        </div>
+                        <div class="BC_head_right">
+                        </div>
+                    </div>
+                    <div class="BC_body">
+                        <div class="boxMenu_content_left_blank">
+
+                        </div>
+                        <div  class="boxMenu_content_left" id="widget_deploy">
+                            <div class="widget_content"  data-dojo-attach-point="widget_deploy">
+                                <div class="boxMenu_content_left_louver" data-dojo-attach-point="widget_louver"></div>                                
+                            </div>
+                                
+                        </div>
+                        <div class="boxMenu_content_right">
+                            <div class="boxMenu_content_right_btn" data-dojo-attach-point="closeIconWidget" data-dojo-attach-event="onclick:closeWidget"><i class="icon ion-android-close"></i></div>
+                            <div class="boxMenu_content_right_btn" data-dojo-attach-event="onclick:hideContent"><i class="icon ion-ios-arrow-back"></i></div>
+                        </div>
+                    </div>
+                </div>                
+            </div>      
+        </div>
+    </div>
+    <footer>
+        <a href="https://ciaf.igac.gov.co/" target="_blank" title="(CIAF) Centro de Investigación y desarrollo en información Geográfica">
+            <img src="theme/images/Identificador-CIAF-parte-inferior.png" alt="CIAF">            
+        </a> 
+    </footer>    
+</div>
