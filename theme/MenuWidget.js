@@ -50,6 +50,9 @@ define([
     './MenuWidget__Btn/MenuWidget__Btn',
     'dojo/text!./template.html',
     'dojox/layout/Dock',
+    "dojox/layout/FloatingPane",
+    "dojo/dnd/move",
+    "dojo/_base/html",
     'dojo/_base/window',
     'dojo/store/Memory',
     "dijit/registry",
@@ -60,7 +63,8 @@ define([
 ], function(declare, _WidgetBase, _TemplatedMixin,
   _WidgetsInTemplateMixin, request, lang,
   domConstruct, array, domClass, dom, Topic,
-  MenuWidget__Btn, template, Dock, win,
+  MenuWidget__Btn, template, Dock,FloatingPane,
+  Move,html,win,
   Memory, registry,domStyle,on) {
   
   return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -142,38 +146,38 @@ define([
           Topic.publish("configMapa", widgetsData.map);
           //CALCULAR ANCHO BOX DE BOTONES
           let listaWidgetSingle = this.config.widgetSingle;
-          let listaWidgetGroup = this.config.widgetGroup;          
+          let listaWidgetGroup = this.config.widgetGroup; 
+          let ConfiglistaWidget = this.config.widgets;         
           let widthBox=41;
-          widthBox = widthBox*(1+listaWidgetSingle.length+ listaWidgetGroup.length);
+          widthBox = widthBox*(1+ConfiglistaWidget.length);
           domStyle.set(this.box_btns,'width',widthBox+'px');
           //RECORRIDO DE WIDGETS INDIVIDUALES          
           let listaWidgets = [];
-          array.forEach(listaWidgetSingle, function(item) {
-            new MenuWidget__Btn({
-              id: 'MenuWidget_Btn_' + item.id,
-              name: item.name,
-              typeClass: 'boxMenu_options_btn boxMenu_options_btn_A',
-              icon: item.uri + '/images/' + item.icon,
-              tipo: 'A',
-              config: item
-            }).placeAt(this.list_btn, 'last');
-            item['opened'] = false;
-            listaWidgets.push(item);
-          }, this);
-          //RECORRIDO DE WIDGETS GRUPALES
-          listaWidgetGroup = this.config.widgetGroup;
-          array.forEach(listaWidgetGroup, function(item) {
-            new MenuWidget__Btn({
-              name: item.name,
-              typeClass: 'boxMenu_options_btn boxMenu_options_btn_A',
-              icon: 'theme/images/' + item.icon,
-              childWidgets: item.widgets,
-              tipo: 'B'
-            }).placeAt(this.list_btn, 'last');
-            let widgetsOnGroup = item.widgets;
-            for (let i = 0; i < widgetsOnGroup.length; i++) {
-              widgetsOnGroup[i]['opened'] = false;
-              listaWidgets.push(widgetsOnGroup[i]);
+          array.forEach(ConfiglistaWidget, function(item){
+            if(item.type == 'single'){
+              new MenuWidget__Btn({
+                id: 'MenuWidget_Btn_' + item.id,
+                name: item.name,
+                typeClass: 'boxMenu_options_btn boxMenu_options_btn_A',
+                icon: item.uri + '/images/' + item.icon,
+                tipo: 'A',
+                config: item
+              }).placeAt(this.list_btn, 'last');
+              item['opened'] = false;
+              listaWidgets.push(item);
+            }else{//Group
+              new MenuWidget__Btn({
+                name: item.name,
+                typeClass: 'boxMenu_options_btn boxMenu_options_btn_A',
+                icon: 'theme/images/' + item.icon,
+                childWidgets: item.widgets,
+                tipo: 'B'
+              }).placeAt(this.list_btn, 'last');
+              let widgetsOnGroup = item.widgets;
+              for (let i = 0; i < widgetsOnGroup.length; i++) {
+                widgetsOnGroup[i]['opened'] = false;
+                listaWidgets.push(widgetsOnGroup[i]);
+              }
             }
           }, this);
           //CONSTRUCCION DE STORE CON INFORMACIÓN DE LOS WIDGETS DISPONIBLES
@@ -264,37 +268,120 @@ define([
      */ 
     _openWidget: function(id) {      
       let MenuWidget = this;
-      let configWidget_Btn = this.storeWidgets.get(id);
+      var configWidget_Btn = this.storeWidgets.get(id);
       if (!configWidget_Btn.opened) {
-        configWidget_Btn.opened = true;
-
-        if(!MenuWidget.visibilidadContent)
-          MenuWidget.openContent();
-        //CREAR NODO EN DOM QUE CONTIENE WIDGET          
-        let nodeCustomWidget = domConstruct.toDom('<div id="widget_box_'+configWidget_Btn.id+'" class="widget_content"></div>');
-        nodeCustomWidget.innerHTML = '<img src="images/loading-1.gif" class="loading_Widget">'
-        domConstruct.place(nodeCustomWidget,MenuWidget.widget_deploy,'last');
-        //CREAR ICONO LATERAL QUE INDICA QUE ESTA ABIERTO
-        MenuWidget.addIconWidget(configWidget_Btn);          
-        require([
-                    configWidget_Btn.uri + '/widget',
-                    'xstyle/css!./' + configWidget_Btn.uri + '/css/style.css'
-                ], function(customWidget){
-          //CREAR WIDGET E INSERTAR A NODO CONTENEDOR
-          let cw = new customWidget({
-            id:'customWidget_'+configWidget_Btn.id
-          });
-          nodeCustomWidget.innerHTML ='';
-          cw.placeAt(nodeCustomWidget,'last');
-          cw.startup();                           
-          console.log('[CREATE] - widget ' + configWidget_Btn.id +' fue creado');
-        });
-
-
+        configWidget_Btn.opened = true;        
+        switch(configWidget_Btn.display){
+          case 'leftColumn':
+            //CREAR ICONO LATERAL QUE INDICA QUE ESTA ABIERTO
+            MenuWidget.addIconWidget(configWidget_Btn);  
+            if(!MenuWidget.visibilidadContent)
+              MenuWidget.openContent();
+            //CREAR NODO EN DOM QUE CONTIENE WIDGET          
+            let nodeCustomWidget = domConstruct.toDom('<div id="widget_box_'+configWidget_Btn.id+'" class="widget_content"></div>');
+            nodeCustomWidget.innerHTML = '<img src="images/loading-1.gif" class="loading_Widget">'
+            domConstruct.place(nodeCustomWidget,MenuWidget.widget_deploy,'last');                    
+            require([
+                  configWidget_Btn.uri + '/widget',
+                  'xstyle/css!./' + configWidget_Btn.uri + '/css/style.css'
+              ], function(customWidget){
+              //CREAR WIDGET E INSERTAR A NODO CONTENEDOR
+              let cw = new customWidget({
+                id:'customWidget_'+configWidget_Btn.id
+              });
+              nodeCustomWidget.innerHTML ='';
+              cw.placeAt(nodeCustomWidget,'last');
+              cw.startup();                           
+              console.log('[CREATE] - widget ' + configWidget_Btn.id +' fue creado');
+            });
+            break;
+          case 'floatingWindow':
+            require([
+              configWidget_Btn.uri + '/widget',
+              'xstyle/css!./' + configWidget_Btn.uri + '/css/style.css'
+            ], function(customWidget){
+              //CREAR WIDGET E INSERTAR A NODO CONTENEDOR
+              let cw = new customWidget({
+                id:'customWidget_'+configWidget_Btn.id
+              });
+              let widgetDock = registry.byId('dock');
+              if(widgetDock == undefined)
+                widgetDock = new Dock({
+                  id: 'dock',
+                  style: 'position:absolute; bottom:0; right:0; height:0px; width:0px; display:none; z-index:0;' //tuck the dock into the the bottom-right corner of the app
+                }, domConstruct.create('div', null, win.body()));
+              let fixFloatingPane = declare(FloatingPane, {
+                postCreate: function() {
+                  this.inherited(arguments);
+                  this.moveable = Move.constrainedMoveable(this.domNode, {
+                    handle: this.focusNode,
+                    constraints: function() {
+                      var coordsBody = html.coords(dojo.body());
+                      // or
+                      var coordsWindow = {
+                        l: 0,
+                        t: 0,
+                        w: window.innerWidth,
+                        h: window.innerHeight
+                      };
+                      return coordsWindow;
+                    },
+                    within: true
+                  }),
+                  this.configWidget = configWidget_Btn,
+                  this.close = function(){
+                    console.log('Cerrando!!');
+                    let mw = registry.byId('MenuWidgetOficina205');
+                    if(mw.widgetTarget == this.configWidget.id)
+                      mw.widgetTarget = 0;
+                    mw.destroyWidget(this.configWidget.id);
+                    this.destroy();
+                  }
+                }
+              });
+              let positionTop = 100;
+              let positionLeft = 300;
+                if(configWidget_Btn.top != undefined)
+                  positionLeft = configWidget_Btn.top;
+                if(configWidget_Btn.left != undefined)
+                  positionLeft = configWidget_Btn.left;
+              let floatingPane = new fixFloatingPane({
+                id: configWidget_Btn.id+'_FP_general',
+                title: configWidget_Btn.name,
+                minSize: 300,
+                class: 'FP_general',
+                //href: 'html/options.html',
+                //preload: true, //if you want to load content on app load set preload to true
+                resizable: true, //allow resizing
+                closable: true, //we never want to close a floating pane - this method destroys the dijit
+                dockable: false, // yes we want to dock it
+                dockTo: widgetDock, //if you create the floating pane outside of the same function as the dock, you'll need to set as dijit.byId('dock')
+                style: 'position:absolute;top:'+positionTop+'px;left:'+positionLeft+'px;width:500px;height:300px;z-index:999 !important',
+                content: cw
+                  //you must set position:absolute; and provide a top and left value (right and bottom DO NOT WORK and will cause the floating pane to appear in strange places depending on browser, for example 125684 pixels right)
+                  //Why top and left? The position of a floating pane is a relationship between the top-left corner of dojo.window and the top-left corner of the dijit
+                  //you must also set a height and width
+                  //z-index is mainly irrelavant as the dijit will control its own z-index, but I always set it to 999 !important to avoid the occasional and mysterious problem of the title and content panes of the floating pane appearing at different z-indexes
+              }, domConstruct.create('div', null, win.body()));
+              floatingPane.startup();             
+              cw.startup();    
+              console.log('[CREATE] - widget ' + configWidget_Btn.id +' fue creado');
+            });
+            break;
+        }
       } else {
         console.warn('[WARN] - El Widget con id:'+this.id+' ya ha sido creado');
-        MenuWidget.openContent();
-        MenuWidget.changeWidget(configWidget_Btn);      
+        switch(configWidget_Btn.display){
+          case 'leftColumn':
+            MenuWidget.openContent();
+            MenuWidget.changeWidget(configWidget_Btn);      
+            break;
+          case 'floatingWindow':
+            alert('Floating Window! Again');
+            break; 
+        }
+
+        
       }
     },
     /**
@@ -319,34 +406,50 @@ define([
       }
     },    
     /**
+     * Responde a cierre de widget con display = leftColumn
+     * @memberof module:theme/MenuWidget#
+     * @param {object} event - Objeto del evento clic
+     */
+    closeWidget:function(event){      
+      this.destroyWidget(this.widgetTarget);
+      this.widgetTarget = 0;
+      this.hideContent(null);     
+    },
+    /**
      * Destruye icono, contenedor y widget que este actualmente visible
      * @memberof module:theme/MenuWidget#
      * @param {object} event - Objeto del evento clic
      */
-    closeWidget:function(event){
-      var iconWidget = dom.byId('widget_icon_'+this.widgetTarget);
-      var widget = registry.byId('customWidget_'+this.widgetTarget);
-      var idWidget = this.widgetTarget;
-      var indexOpenedWidgets = -1;
-      this.hideContent(null);
-      //Eliminar de variables de control global Widget
-      this.widgetTarget = 0;
+    destroyWidget:function(idWidget){
+      let iconWidget = dom.byId('widget_icon_'+idWidget);
+      let widget = registry.byId('customWidget_'+idWidget);
+      let indexOpenedWidgets = -1;      
+      var configWidget =this.storeWidgets.get(idWidget);
+      //Eliminar de variables de control global Widget      
       indexOpenedWidgets = this.openedWidgets.indexOf(idWidget);
       if(indexOpenedWidgets > -1)
         this.openedWidgets.splice(indexOpenedWidgets,1);
-      this.storeWidgets.get(idWidget).opened = false;
+      configWidget.opened = false;
       //Animación y destruccion
-      on(iconWidget,'animationend', function(event){
-        console.log('widget Destruido');
-        if(typeof widget.onDestroy === "function")
-          widget.onDestroy();
-        widget.destroy();
-        domConstruct.destroy('widget_icon_'+idWidget);
-        domConstruct.destroy('widget_box_'+idWidget);
-      });
-      domClass.add(iconWidget,'destroying');
-      //on('animationend ')
-      //this.widgetTarget;
+      switch(configWidget.display){
+        case 'leftColumn':
+          on(iconWidget,'animationend', function(event){
+            console.log('widget Destruido');
+            if(typeof widget.onDestroy === "function")
+              widget.onDestroy();
+            widget.destroy();
+            domConstruct.destroy('widget_icon_'+idWidget);
+            if(configWidget.display == 'leftColumn' )
+              domConstruct.destroy('widget_box_'+idWidget);
+          });
+          domClass.add(iconWidget,'destroying');     
+          break;
+        case 'floatingWindow':
+          console.log('widget Destruido');
+          widget.destroy();
+          break; 
+      }
+      
     },
     /**
      * Crea un icono en dock lateral que indica que el widget ha sido desplegado
@@ -362,8 +465,16 @@ define([
       let iconoLateral = domConstruct.toDom('<li class="selected" id="widget_icon_'+item.id+'" title="'+item.name+'" ><img src="'+ item.uri + '/images/' + item.icon +'"></li>');          
       domConstruct.place(iconoLateral,this.dock_widgets,'last');
       this.openedWidgets.push(item.id);
-      on(iconoLateral,'click',lang.hitch(this,this.handleChangeWidget(item)));
-      this.changeWidget(item);
+      switch(item.display){
+        case 'leftColumn':
+          on(iconoLateral,'click',lang.hitch(this,this.handleChangeWidget(item)));
+          this.changeWidget(item);
+          break;
+        case 'floatingWindow':
+          
+          break; 
+      }
+      
     },
     /**
      * Maneja el evento click del dock lateral para visualizar un widget desplegado
