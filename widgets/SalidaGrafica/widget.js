@@ -28,14 +28,16 @@ define([
     "esri/tasks/PrintTemplate",
     "esri/tasks/PrintParameters",
     "esri/tasks/PrintTask",
-    "dojo/dom-style"
+    "dojo/dom-style",
+    "dijit/Dialog"
   ],
   function(declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
     template, FilteringSelect, request, Memory, lang, registry, Print, dom,
     PrintTemplate,
     PrintParameters,
     PrintTask,
-    domStyle) {
+    domStyle,
+    Dialog) {
 
     /**
      * Crea un nuevo SalidaGrafica (Constructor)
@@ -55,9 +57,10 @@ define([
       tipoPapel: null,
       tipoFormato: null,
       objImpresion: null,
-      URLPrintService:'http://132.255.20.158:6080/arcgis/rest/services/Print/A4_Horizontal/GPServer/Export%20Web%20Map',
-      template:null,
-      map:null,
+      URLPrintService: 'http://190.85.164.30:6080/arcgis/rest/services/Print/A4_Horizontal/GPServer/Export%20Web%20Map',
+      template: null,
+      map: null,
+      servicioActivo: null,
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -68,11 +71,6 @@ define([
       postCreate: function() {
         this.inherited(arguments);
         this.map = registry.byId('EsriMap').map;
-        /* this.objImpresion = new Print({
-          map: this.map,
-          url: this.URLPrintService
-        }, this.btnExportMap);
-        this.objImpresion.startup(); */
       },
       /**
        * Funcion del ciclo de vida del Widget en Dojo,se dispara despues
@@ -81,31 +79,38 @@ define([
        * @function
        */
       startup: function() {
+
+        domStyle.set(this.maskService, 'display', 'block');
         this.inherited(arguments);
         this.template = new PrintTemplate();
         this.template.exportOptions = {
-          width : 500,
-          height : 500,
+          width: 500,
+          height: 500,
           dpi: 150
         };
+
         this.template.layoutOptions = {
-          titleText:'SIG LIMITES Y FRONTERAS',
-          authorText:'IGAC LIMITES Y FRONTERAS',
-          copyrightText:'SIG LIMITES Y FRONTERAS, INSTITUTO GEOGRAFICO AGUSTIN CODAZZI',
-          scalebarUnit:'Kilometers'
+          titleText: 'SIG LIMITES Y FRONTERAS',
+          authorText: 'IGAC LIMITES Y FRONTERAS',
+          copyrightText: 'SIG LIMITES Y FRONTERAS, INSTITUTO GEOGRAFICO AGUSTIN CODAZZI',
+          scalebarUnit: 'Kilometers'
         };
+
         let printRequest = request({
           url: this.URLPrintService,
           content: {
             f: "json"
           },
           handleAs: "json",
-          callbackParamName: "callback"
+          callbackParamName: "callback",
+          timeout: 5000
         });
 
         printRequest.then(lang.hitch(this,
             function(response) {
               //console.log("Success: ", response);
+              this.servicioActivo = true;
+              domStyle.set(this.maskService, 'display', 'none');
               let options = response.parameters;
               let arregloOpcionesPapel = [];
               let arregloOpcionesFormato = [];
@@ -163,30 +168,53 @@ define([
               this.tipoFormato.startup();
 
             }),
-          function(error) {
-            console.log("Error: ", error.message);
-          }
+          lang.hitch(this,
+            function(error) {
+              this.generarDialog(
+                "Ocurrio un error al consultar las opciones de impresión, intente mas tarde"
+              );
+              domStyle.set(this.maskService, 'display', 'none');
+              this.servicioActivo = false;
+            })
         );
 
       },
       exportMap: function() {
-        domStyle.set(this.mask,'display','block');
-        domStyle.set(this.btnArchivoResultado,'display','none');
-        let papel = this.tipoPapel.item.name;
-        let formato = this.tipoFormato.item.name;        
-        this.template.format = formato;
-        this.template.layout = papel;
-        let params = new PrintParameters();
-        params.map = this.map;
-        params.template = this.template;
-        printTask = new PrintTask(this.URLPrintService);
-        printTask.execute(params,lang.hitch(this,function(response) {
+        console.log(this.servicioActivo);
+
+        if (this.servicioActivo) {
+          domStyle.set(this.mask, 'display', 'block');
+          domStyle.set(this.btnArchivoResultado, 'display', 'none');
+          let papel = this.tipoPapel.item.name;
+          let formato = this.tipoFormato.item.name;
+          this.template.format = formato;
+          this.template.layout = papel;
+          let params = new PrintParameters();
+          params.map = this.map;
+          params.template = this.template;
+          printTask = new PrintTask(this.URLPrintService);
+          printTask.execute(params, lang.hitch(this, function(response) {
             this.btnArchivoResultado.href = response.url;
-            domStyle.set(this.btnArchivoResultado,'display','block');
-            domStyle.set(this.mask,'display','none');
+            domStyle.set(this.btnArchivoResultado, 'display',
+              'block');
+            domStyle.set(this.mask, 'display', 'none');
             /* console.log("The printed document is at " + response.url);
             window.open(response.url); */
-        }));
+          }));
+        } else {
+          this.generarDialog(
+            "No se han descargado las opciones de impresión, intente mas tarde"
+          );
+        }
+      },
+      generarDialog: function(msg) {
+        myDialog = new Dialog({
+          title: '<i style="font-size:1.3em" class="icon ion-alert-circled"></i>' +
+            ' <b>Error</b>',
+          content: msg,
+          style: "width: 300px"
+        });
+        myDialog.show();
       }
     });
   });
