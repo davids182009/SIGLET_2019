@@ -390,3 +390,36 @@ footer{
     background: -moz-linear-gradient(to right,#00636B,#3090AC) !important;
 }
 
+/* FLOATING PANE*/
+.FP_general {
+    border: 1px solid #ccc;
+}
+
+.FP_general .dojoxFloatingPaneTitle{
+    background: #00636B;
+	background: linear-gradient(to right,#00636B,#3090AC);
+	background: -webkit-linear-gradient(to right,#00636B,#3090AC);
+    background: -moz-linear-gradient(to right,#00636B,#3090AC);
+    color: white;
+    border: 0px;
+    cursor: move;
+}
+
+.FP_general .dojoxFloatingMinimizeIcon {
+    margin-right:10px;    
+    cursor: pointer;
+}
+/* .FP_general .dojoxFloatingMinimizeIcon:hover {
+    background-position: -21px 50%;
+}
+.FP_general .dojoxFloatingMinimizeIcon:active {
+    background-position: -42px 50%;
+} */
+.FP_general .dojoxFloatingCloseIcon:hover{
+    opacity: 0.7;
+}
+
+.dojoxDock{
+    display: none;
+}
+

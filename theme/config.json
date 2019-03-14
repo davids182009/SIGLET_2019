@@ -1,84 +1,98 @@
 {
-  "widgetSingle": [{
+  "widgets":[
+    {
+      "type":"single",
       "id": 1,
       "name": "Explorador de Capas",
       "version": "1.0",
       "uri": "widgets/LayerExplorer",
+      "display":"leftColumn",
       "icon": "icon.png",
       "closable": false,
       "openOnLoad": true
     },
     {
+      "type":"single",
       "id": 2,
       "name": "Acto Administrativo limite",
       "version": "1.0",
       "uri": "widgets/AnalisisLimites",
+      "display":"leftColumn",
       "icon": "acto-admin.png"
-    }
-  ],
-  "widgetGroup": [{
+    },
+    {
+      "type":"group",
       "name": "Consultas",
       "icon": "consultas.png",
       "widgets": [
         {
-          "id": 6,
+          "id": 3,
           "name": "Identificar",
           "version": "1.0",
           "uri": "widgets/Identificar",
+          "display":"leftColumn",
           "icon": "identificar.png"
         },
         {
-          "id": 10,
+          "id": 4,
           "name": "Seleccion Espacial",
           "version": "1.0",
           "uri": "widgets/SeleccionEspacial",
+          "display":"leftColumn",
           "icon": "seleccionar.png"
         },
         {
-          "id": 12,
+          "id": 5,
           "name": "Consulta Simple",
           "version": "2.0",
           "uri": "widgets/ConsultaSimple",
+          "display":"leftColumn",
           "icon": "consulta-simple.png"
         }
       ]
     },
     {
+      "type":"group",
       "name": "Procesos",
       "icon": "procesos.png",
       "widgets": [
         {
-          "id": 4,
+          "id": 6,
           "name": "Dibujar",
           "version": "1.0",
           "uri": "widgets/Dibujo",
+          "display":"leftColumn",
           "icon": "dibujar.png",
           "top": "30px",
           "left": "500px"
         },
         {
-          "id": 20,
+          "id": 7,
           "name": "Medir",
           "version": "1.0",
           "uri": "widgets/Medir",
+          "display":"leftColumn",
           "icon": "medir.png"
         }
       ]
     },
     {
+      "type":"group",
       "name": "Importar",
       "icon": "importar.png",
       "widgets": [
         {
-          "id": 5,
+          "id": 8,
           "name": "Adicionar Información Geografica",
           "version": "1.0",
           "uri": "widgets/AdicionarDatos",
+          "display":"leftColumn",
           "icon": "icon.png"
         }
       ]
     },
     {
+      "type":"group",
       "name": "Exportar",
       "icon": "exportar.png",
       "widgets": [{
@@ -86,11 +100,21 @@
           "name": "Salida Grafica",
           "version": "1.0",
           "uri": "widgets/SalidaGrafica",
+          "display":"leftColumn",
           "icon": "exportar-salida.png"
         }
       ]
+    },
+    {
+      "type":"single",
+      "id": 10,
+      "name": "Ayuda",
+      "version": "1.0",
+      "uri": "widgets/Help",
+      "display":"floatingWindow",
+      "icon": "ayuda.png"
     }
-  ],
+  ],  
   "map": {
     "basemap": "streets",
     "center": [-72.275, 4.573],
