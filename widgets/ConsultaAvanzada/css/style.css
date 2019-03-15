@@ -1,0 +1,109 @@
+.widget-ConsultaAvanzada div:first-child {
+    color: black;
+}
+
+
+.widget-ConsultaAvanzada .botonCriterioAvanzada {
+  color: #fff !important;
+  line-height: 20px;
+  background-color: #3090AC;  !important;
+  border: 0;
+  min-width: 59px;
+  padding: 5px;
+  /*  text-transform: uppercase;*/
+  border-left-color: rgb(255, 255, 255);
+  border-left-style: none;
+  border-left-width: 2px;
+  border-right-color: rgb(255, 255, 255);
+  border-right-style: none;
+  border-right-width: 0px;
+  border-top-color: rgb(255, 255, 255);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-top-style: none;
+  border-top-width: 2px;
+  background-attachment: scroll;
+  margin: 5px;
+}
+
+.widget-ConsultaAvanzada .botonConsultarLimpiar {
+  color: #fff !important;
+  line-height: 20px;
+  background-color: #3090AC;  !important;
+  border: 0;
+  min-width: 120px;
+  padding: 5px;
+  /*  text-transform: uppercase;*/
+  border-left-color: rgb(255, 255, 255);
+  border-left-style: none;
+  border-left-width: 2px;
+  border-right-color: rgb(255, 255, 255);
+  border-right-style: none;
+  border-right-width: 0px;
+  border-top-color: rgb(255, 255, 255);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-top-style: none;
+  border-top-width: 2px;
+  background-attachment: scroll;
+  margin: 5px;
+  margin-right: 4%;
+}
+
+.widget-ConsultaAvanzada .consulta {
+    color: #fff !important;
+    line-height: 20px;
+    background-color: #72BF44  !important;
+    border: 0;
+    min-width: 120px;
+    padding: 5px;
+    /*  text-transform: uppercase;*/
+    border-left-color: rgb(255, 255, 255);
+    border-left-style: none;
+    border-left-width: 2px;
+    border-right-color: rgb(255, 255, 255);
+    border-right-style: none;
+    border-right-width: 0px;
+    border-top-color: rgb(255, 255, 255);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-top-style: none;
+    border-top-width: 2px;
+    background-attachment: scroll;
+}
+
+.widget-ConsultaAvanzada .consulta:hover {
+    background: linear-gradient(45deg, #557b3f , #789855 );
+    color: white;
+}
+
+.widget-ConsultaAvanzada #txtWhere {
+    height: 100px;
+}
+
+.widget-ConsultaAvanzada .dijitInputField {
+	padding: 5px 10px;
+}
+.widget-ConsultaAvanzada div.dijitArrowButton.dijitDownArrowButton {
+	width: 18px;
+	height: 100%;
+}
+
+.widget-ConsultaAvanzada button{
+    width: 48%;
+    float: left;
+    margin: 0px;
+}
+
+    .widget-ConsultaAvanzada .extraLine{
+        width: 100%;
+        height: 50px;
+        position: relative;
+    }
+        .widget-ConsultaAvanzada .extraLine #openTablaAtributos{
+            width: 170px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }

@@ -1,27 +1,27 @@
 {
-  "widgets":[
+  "widgets": [
     {
-      "type":"single",
+      "type": "single",
       "id": 1,
       "name": "Explorador de Capas",
       "version": "1.0",
       "uri": "widgets/LayerExplorer",
-      "display":"leftColumn",
+      "display": "leftColumn",
       "icon": "icon.png",
       "closable": false,
       "openOnLoad": true
     },
     {
-      "type":"single",
+      "type": "single",
       "id": 2,
       "name": "Acto Administrativo limite",
       "version": "1.0",
       "uri": "widgets/AnalisisLimites",
-      "display":"leftColumn",
+      "display": "leftColumn",
       "icon": "acto-admin.png"
     },
     {
-      "type":"group",
+      "type": "group",
       "name": "Consultas",
       "icon": "consultas.png",
       "widgets": [
@@ -30,7 +30,7 @@
           "name": "Identificar",
           "version": "1.0",
           "uri": "widgets/Identificar",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "identificar.png"
         },
         {
@@ -38,7 +38,7 @@
           "name": "Seleccion Espacial",
           "version": "1.0",
           "uri": "widgets/SeleccionEspacial",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "seleccionar.png"
         },
         {
@@ -46,13 +46,21 @@
           "name": "Consulta Simple",
           "version": "2.0",
           "uri": "widgets/ConsultaSimple",
-          "display":"leftColumn",
+          "display": "leftColumn",
+          "icon": "consulta-simple.png"
+        },
+        {
+          "id": 30,
+          "name": "Consulta Avanzada",
+          "version": "1.0",
+          "uri": "widgets/ConsultaAvanzada",
+          "display": "leftColumn",
           "icon": "consulta-simple.png"
         }
       ]
     },
     {
-      "type":"group",
+      "type": "group",
       "name": "Procesos",
       "icon": "procesos.png",
       "widgets": [
@@ -61,7 +69,7 @@
           "name": "Dibujar",
           "version": "1.0",
           "uri": "widgets/Dibujo",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "dibujar.png",
           "top": "30px",
           "left": "500px"
@@ -71,13 +79,21 @@
           "name": "Medir",
           "version": "1.0",
           "uri": "widgets/Medir",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "medir.png"
+        },
+        {
+          "id": 11,
+          "name": "Transformación Coordenadas",
+          "version": "1.0",
+          "uri": "widgets/TransformacionCoordenadas",
+          "display": "leftColumn",
+          "icon": "identificar.png"
         }
       ]
     },
     {
-      "type":"group",
+      "type": "group",
       "name": "Importar",
       "icon": "importar.png",
       "widgets": [
@@ -86,13 +102,13 @@
           "name": "Adicionar Información Geografica",
           "version": "1.0",
           "uri": "widgets/AdicionarDatos",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "icon.png"
         }
       ]
     },
     {
-      "type":"group",
+      "type": "group",
       "name": "Exportar",
       "icon": "exportar.png",
       "widgets": [{
@@ -100,21 +116,21 @@
           "name": "Salida Grafica",
           "version": "1.0",
           "uri": "widgets/SalidaGrafica",
-          "display":"leftColumn",
+          "display": "leftColumn",
           "icon": "exportar-salida.png"
         }
       ]
     },
     {
-      "type":"single",
+      "type": "single",
       "id": 10,
       "name": "Ayuda",
       "version": "1.0",
       "uri": "widgets/Help",
-      "display":"floatingWindow",
+      "display": "floatingWindow",
       "icon": "ayuda.png"
     }
-  ],  
+  ],
   "map": {
     "basemap": "streets",
     "center": [-72.275, 4.573],
