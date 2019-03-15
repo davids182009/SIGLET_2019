@@ -73,6 +73,14 @@
           "uri": "widgets/Medir",
           "display":"leftColumn",
           "icon": "medir.png"
+        },
+        {
+          "id": 71,
+          "name": "Ubicar mediante coordenada",
+          "version": "1.0",
+          "uri": "widgets/LocateCoordinate",
+          "display":"leftColumn",
+          "icon": "ubicar-cooredenadas.png"
         }
       ]
     },
