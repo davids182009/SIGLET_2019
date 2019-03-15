@@ -1,0 +1,140 @@
+<div>
+    <div class="form_coordinate-Head">
+        <h3 class="SourceDataStep" step="1">Tipo de sistema</h3> 
+        <input id="coordinate_sistema" >
+    </div>
+    <div class="form_coordinate-Body">
+        <h3 class="SourceDataStep" step="2">Registro de coordenadas</h3> 
+        <div class="form_coordinate__box" data-dojo-attach-point="formularioSistemaA">
+            <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="dijitFormA">            
+                <table class="coordenadasPlanas">
+                    <tbody>
+                        <tr>
+                            <th><b>X:</b></th>
+                            <td>
+                                <input type="text"                                 
+                                    data-dojo-type="dijit/form/NumberTextBox"
+                                    name="X"
+                                    required="true"
+                                    data-dojo-props="invalidMessage:'Numero no valido'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><b>Y:</b></th>
+                            <td>
+                                <input type="text" 
+                                    data-dojo-type="dijit/form/NumberTextBox"
+                                    name="Y"
+                                    required="true"
+                                    data-dojo-props="invalidMessage:'Numero no valido'">
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <th>Origen Gauss</th>
+                            <td>
+                                <select name="originGauss" data-dojo-type="dijit/form/Select">
+                                    <option value="TN">Oeste-Oeste</option>
+                                    <option value="VA">Oeste</option>
+                                    <option value="WA" selected="selected">Central</option>
+                                    <option value="FL">Este</option>
+                                    <option value="CA">Este-este</option>
+                                    <option value="CB">Insular</option>
+                                </select>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form_coordinate__box hide geografico" data-dojo-attach-point="formularioSistemaB">
+            <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="dijitFormB">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="4"><b>Latitud</b></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="latitudOrigen" data-dojo-type="dijit/form/Select">
+                                    <option value="N">N</option>
+                                    <option value="S">S</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input data-dojo-type="dijit/form/NumberSpinner"
+                                    id="latGrados"
+                                    value="4"
+                                    data-dojo-props="smallDelta:1, constraints:{min:0,max:90,places:0}"
+                                    name="latGrados"
+                                /> 
+                                <label for="latGrados">°</label>
+                            </td>
+                            <td>
+                                <input data-dojo-type="dijit/form/NumberSpinner"
+                                    id="latMinutos"
+                                    value="0"
+                                    data-dojo-props="smallDelta:1, constraints:{min:0,max:59,places:0}"
+                                    name="latMinutos"
+                                /> 
+                                <label for="latMinutos">'</label>
+                            </td>
+                            <td>
+                                <input type="text" 
+                                data-dojo-type="dijit/form/NumberTextBox"
+                                name="latSegundos"
+                                required="true"
+                                data-dojo-props="constraints:{min:0,max:59,places:2},invalidMessage:'Numero no valido'">
+                                <label for="latMinutos">"</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><b>Longitud</b></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="longitudOrigen" data-dojo-type="dijit/form/Select">
+                                    <option value="N">E</option>
+                                    <option value="S">O</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input data-dojo-type="dijit/form/NumberSpinner"
+                                    id="lonGrados"
+                                    value="4"
+                                    data-dojo-props="smallDelta:1, constraints:{min:0,max:180,places:0}"
+                                    name="lonGrados"
+                                /> 
+                                <label for="lonGrados">°</label>
+                            </td>
+                            <td>
+                                <input data-dojo-type="dijit/form/NumberSpinner"
+                                    id="lonMinutos"
+                                    value="0"
+                                    data-dojo-props="smallDelta:1, constraints:{min:0,max:59,places:0}"
+                                    name="lonMinutos"
+                                /> 
+                                <label for="lonMinutos">'</label>
+                            </td>
+                            <td>
+                                <input type="text" 
+                                data-dojo-type="dijit/form/NumberTextBox"
+                                name="lonSegundos"
+                                required="true"
+                                data-dojo-props="constraints:{min:0,max:59,places:2},invalidMessage:'Numero no valido'">
+                                <label for="lonMinutos">"</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="form_coordinate-Footer">
+        <button data-dojo-attach-event="click:drawCoordinate">
+            Ubicar
+        </button>
+        <button>
+            Limpiar
+        </button>
+    </div>
+</div>
