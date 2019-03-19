@@ -24,6 +24,11 @@
   border-top-width: 2px;
   background-attachment: scroll;
   margin: 5px;
+  width:3em;
+}
+
+.widget-ConsultaAvanzada .botonCriterioAvanzada:hover{
+  cursor: pointer;
 }
 
 .widget-ConsultaAvanzada .botonConsultarLimpiar {
