@@ -1,4 +1,5 @@
 /**
+ * Prueba para DAVID
 * Dojo AMD (Asynchronous Module Definition ) 
 * Widget que representa la funcionalidad para agregar URL o archivos externos al mapa
 * @version 1.0
