@@ -143,7 +143,7 @@ define([
        */
       startup: function() {
         var cp1 = new ContentPane({
-          title: "Consulta Simple",
+          title: "Consulta Avanzada",
           content: template
         }, "tabContainerQueryAvanzada");
         cp1.startup();
@@ -217,6 +217,7 @@ define([
               'value');
             let valor = registry.byId("calValorAvanzada").get(
               'value');
+            let expresion = dom.byId("txtBusquedaCA").value;
 
             var mensajeValidacion = " campos: ";
             if (capa == '' || capa == undefined) {
@@ -228,8 +229,14 @@ define([
             if (valor == '' || valor == undefined) {
               mensajeValidacion += " Seleccione un campo,";
             }
+            if (expresion == "" || expresion == null || expresion ==
+              undefined) {
+              mensajeValidacion +=
+                " Digite un criterio de busqueda,";
+            }
             if (mensajeValidacion == " campos: ") {
-              this._consultaOpcion(capa, atrributo, valor);
+              this._consultaOpcion(capa, atrributo, valor,
+                expresion);
             } else {
               var msg = "Verificar " + mensajeValidacion.slice(0, -
                 1) + " por favor.";
@@ -243,6 +250,68 @@ define([
             registry.byId("calCapa").reset();
             registry.byId("calAtributoAvanzada").reset();
             registry.byId("calValorAvanzada").reset();
+            dom.byId("txtBusquedaCA").value = "";
+          }));
+
+        //Evento click de los botones de criterio consulta avanzada
+        on(dom.byId("btnIgualCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("=");
+          }));
+
+        on(dom.byId("btnDiferenteCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("<>");
+          }));
+
+        on(dom.byId("btnMayorCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea(">");
+          }));
+
+        on(dom.byId("btnMenorCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("<");
+          }));
+
+        on(dom.byId("btnMayorIgualCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea(">=");
+          }));
+
+        on(dom.byId("btnMenorIgualCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("<=");
+          }));
+
+        on(dom.byId("btnLikeCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("LIKE");
+          }));
+
+        on(dom.byId("btnAndCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("AND");
+          }));
+
+        on(dom.byId("btnOrCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("OR");
+          }));
+
+        on(dom.byId("btnNotCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("NOT");
+          }));
+
+        on(dom.byId("btnIsCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("IS");
+          }));
+
+        on(dom.byId("btnNullCA"), "click", dojo.hitch(this,
+          function(evt) {
+            this.setearValoresTextArea("NULL");
           }));
 
         //crear select de capa en consulta simple
@@ -251,13 +320,16 @@ define([
           id: "calCapa",
           store: this.listadoCapas,
           searchAttr: "name",
+          selectOnClick: true,
           style: "height: 33px; width: 100%;",
-          onChange: dojo.hitch(this, this.poblarAtributos),
+          onChange: dojo.hitch(this, this.poblarAtributos)
         }, "divAvanzada").startup();
 
+        // registry.byId("calAtributoAvanzada").on("click", dojo.hitch(
+        //   this, this.setearValoresTextArea));
+
         registry.byId("calAtributoAvanzada").on("change", dojo.hitch(
-          this, this
-          .poblarValores));
+          this, this.poblarValores));
       },
 
       /**
@@ -296,7 +368,8 @@ define([
               case 'CSV':
               case 'shapefile':
                 fields = this.capaWidgetSelected.layer[0].fields;
-                this.dataFeatures = this.capaWidgetSelected.layer[0].graphics;
+                this.dataFeatures = this.capaWidgetSelected.layer[0]
+                  .graphics;
                 break;
             }
             break;
@@ -336,6 +409,13 @@ define([
        *
        */
       poblarValores: function(e) {
+        // let texto = dom.byId("txtBusquedaCA").value += e;
+        // if (texto == "") {
+        dom.byId("txtBusquedaCA").value += e;
+        // } else {
+        //   dom.byId("txtBusquedaCA").value = "";
+        // }
+
         let tipoField;
         var array = [];
         var uniqueValuesArray = [];
@@ -369,7 +449,8 @@ define([
           'value');
         let array = [];
         let ListaIndicadores = [];
-        dojoArray.forEach(features, lang.hitch(this, function(feature) {
+        dojoArray.forEach(features, lang.hitch(this, function(
+          feature) {
           if (feature.attributes[nombreAtributo] != undefined) {
             if (dojoArray.indexOf(ListaIndicadores, feature.attributes[
                 nombreAtributo]) == -1) {
@@ -377,7 +458,8 @@ define([
               if (typeof feature.attributes[nombreAtributo] ===
                 'string') {
                 obj = {
-                  "id": "'" + feature.attributes[nombreAtributo] +
+                  "id": "'" + feature.attributes[
+                      nombreAtributo] +
                     "'",
                   "name": feature.attributes[nombreAtributo]
                 }
@@ -408,6 +490,8 @@ define([
         });
         registry.byId("calValorAvanzada").reset();
         registry.byId("calValorAvanzada").set('store', arrayValores);
+        registry.byId("calValorAvanzada").on("change", dojo.hitch(
+          this, this.setearValorDdl));
       },
 
 
@@ -423,7 +507,7 @@ define([
        * @param {string} especializada- caracter que indica el texto para la consulta avanzada
        *
        */
-      _consultaOpcion: function(capa, atrributo, valor) {
+      _consultaOpcion: function(capa, atrributo, valor, expresion) {
         //listar las capas en el visor
         //layerExplorer = registry.byId('ContenerCapas_1');
         switch (this.capaWidgetSelected.tipo) {
@@ -437,30 +521,37 @@ define([
                 1).indexOf('\'');
               if (posicionApostrofe > 0) {
                 posicionApostrofe++;
-                valor = valor.substring(0, posicionApostrofe) + '\'' +
+                valor = valor.substring(0, posicionApostrofe) +
+                  '\'' +
                   valor.substring(posicionApostrofe);
               }
             }
-            query.where = atrributo + " = " + valor;
+            query.where = expresion;
             query.returnGeometry = false;
             let queryTask = new QueryTask(this.urlCapaSeleccionada);
             queryTask.execute(query, lang.hitch(this, function(
               resultado) {
-              this.tablaAtributos.setDataFeatures(resultado, this
+              this.tablaAtributos.setDataFeatures(resultado,
+                this
                 .capaWidgetSelected);
-            }), function(error) {
-              console.log(error);
-            });
+            }), lang.hitch(this,
+              function(error) {
+                this.generarDialog(
+                  "Puede que la consulta realizada tenga errores, intente nuevamente"
+                );
+              }));
             break;
           default:
             let result = {};
-            if (typeof this.capaWidgetSelected.layer[0] != 'undefined')
+            if (typeof this.capaWidgetSelected.layer[0] !=
+              'undefined')
               result.fields = this.capaWidgetSelected.layer[0].fields;
             else
               result.fields = this.capaWidgetSelected.layer.fields;
             result.features = [];
             dojoArray.forEach(this.dataFeatures, function(feature) {
-              if (typeof feature.attributes[atrributo] === 'string') {
+              if (typeof feature.attributes[atrributo] ===
+                'string') {
                 if ("'" + feature.attributes[atrributo] + "'" ==
                   valor)
                   result.features.push(feature);
@@ -569,6 +660,12 @@ define([
       },
       onDestroy: function() {
 
+      },
+      setearValoresTextArea: function(text) {
+        dom.byId("txtBusquedaCA").value += " " + text + " ";
+      },
+      setearValorDdl: function(e) {
+        dom.byId("txtBusquedaCA").value += e;
       }
     });
   });
