@@ -1,6 +1,78 @@
-.widget-NombreWidget{
+.widget-LocateCoordinate{
     width: 100%;
-    height: 100px;
-    background-color: red;
+}
+.widget-LocateCoordinate > div{
+    width: 100%;
+    display: block;
+    margin: 0;
+}
+    .widget-LocateCoordinate .SourceDataStep{
+        position: relative;
+        text-align: left;
+        padding-left: 26px;
+        margin: 0 0 5px 0;
+
+    }
+    .widget-LocateCoordinate .SourceDataStep::after{
+        content: attr(step);
+        width: 25px;
+        height: 25px;
+        background-color: #3F4242;
+        display: block;
+        position: absolute;
+        top: -3px;
+        left: 0px;
+        text-align: center;
+        line-height: 25px;
+        color: white;
+    }
+.form_coordinate-Head,
+.form_coordinate-Footer{
+}
+    #widget_coordinate_sistemaTrans{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+.form_coordinate-Body{
+    height: 130px;
+    position: relative;
+}
+    .form_coordinate__box{
+        transition: all .3s ease-in;
+        position: absolute;
+        left: 0;
+        top: 35px;
+        width: 100%;
+        height: 100px;
+        padding-left: 25px;
+    }
+    .form_coordinate__box.hide{
+        z-index: -500;
+        opacity: 0;
+    }
+        /* .form_coordinate__box .coordenadasPlanas th{
+            width: 40px;
+            text-align: right;
+        } */
+        .form_coordinate__box .dijitSpinner {
+            width: 45px;
+        }
+        .form_coordinate__box.geografico .dijitNumberTextBox:not(.dijitSpinner){
+            width: 80px;
+        }
+.widget-LocateCoordinate button{
+    width: 50%;
+    border: 0px;
+    background-color: #3090AC;
+    padding: 5px;
+    margin: 5px 25%;
+    border-radius: 2px;
+    cursor: pointer;
     color: white;
+    font-weight: bold;
+    transition: all .3s ease-in-out;
+}
+.widget-LocateCoordinate button:hover{
+    background-color: #00636B;
 }
