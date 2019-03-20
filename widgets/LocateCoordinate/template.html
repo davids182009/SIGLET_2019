@@ -14,7 +14,8 @@
                             <td>
                                 <input type="text"                                 
                                     data-dojo-type="dijit/form/NumberTextBox"
-                                    name="X"
+                                    name="X" 
+                                    value="999732.73"
                                     required="true"
                                     data-dojo-props="invalidMessage:'Numero no valido'">
                             </td>
@@ -25,6 +26,7 @@
                                 <input type="text" 
                                     data-dojo-type="dijit/form/NumberTextBox"
                                     name="Y"
+                                    value="1004717.48"
                                     required="true"
                                     data-dojo-props="invalidMessage:'Numero no valido'">
                             </td>
@@ -72,7 +74,7 @@
                             <td>
                                 <input data-dojo-type="dijit/form/NumberSpinner"
                                     id="latMinutos"
-                                    value="0"
+                                    value="38"
                                     data-dojo-props="smallDelta:1, constraints:{min:0,max:59,places:0}"
                                     name="latMinutos"
                                 /> 
@@ -82,7 +84,8 @@
                                 <input type="text" 
                                 data-dojo-type="dijit/form/NumberTextBox"
                                 name="latSegundos"
-                                required="true"
+                                required="true" 
+                                value="19.9"
                                 data-dojo-props="constraints:{min:0,max:59,places:2},invalidMessage:'Numero no valido'">
                                 <label for="latMinutos">"</label>
                             </td>
@@ -93,14 +96,14 @@
                         <tr>
                             <td>
                                 <select name="longitudOrigen" data-dojo-type="dijit/form/Select">
-                                    <option value="N">E</option>
-                                    <option value="S">O</option>
+                                    <option value="E">E</option>
+                                    <option value="W" selected="selected">O</option>
                                 </select>
                             </td>
                             <td>
                                 <input data-dojo-type="dijit/form/NumberSpinner"
                                     id="lonGrados"
-                                    value="4"
+                                    value="74"
                                     data-dojo-props="smallDelta:1, constraints:{min:0,max:180,places:0}"
                                     name="lonGrados"
                                 /> 
@@ -109,7 +112,7 @@
                             <td>
                                 <input data-dojo-type="dijit/form/NumberSpinner"
                                     id="lonMinutos"
-                                    value="0"
+                                    value="4"
                                     data-dojo-props="smallDelta:1, constraints:{min:0,max:59,places:0}"
                                     name="lonMinutos"
                                 /> 
@@ -120,6 +123,7 @@
                                 data-dojo-type="dijit/form/NumberTextBox"
                                 name="lonSegundos"
                                 required="true"
+                                value="47.7"
                                 data-dojo-props="constraints:{min:0,max:59,places:2},invalidMessage:'Numero no valido'">
                                 <label for="lonMinutos">"</label>
                             </td>
@@ -133,7 +137,7 @@
         <button data-dojo-attach-event="click:drawCoordinate">
             Ubicar
         </button>
-        <button>
+        <button data-dojo-attach-event="click:clearCoordinate">
             Limpiar
         </button>
     </div>
