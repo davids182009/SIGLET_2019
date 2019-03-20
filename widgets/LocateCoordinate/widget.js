@@ -180,7 +180,7 @@ define([
             * @function
             */
             onDestroy:function(){
-                
+                this.clearCoordinate(null);
             }             
         });
     });
