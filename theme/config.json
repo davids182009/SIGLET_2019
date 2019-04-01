@@ -96,6 +96,13 @@
           "uri": "widgets/LocateCoordinate",
           "display": "leftColumn",
           "icon": "ubicar-cooredenadas.png"
+        }, {
+          "id": 78,
+          "name": "Buffer",
+          "version": "1.0",
+          "uri": "widgets/Buffer",
+          "display": "leftColumn",
+          "icon": "identificar.png"
         }
       ]
     },

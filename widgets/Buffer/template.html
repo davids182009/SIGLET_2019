@@ -1,0 +1,72 @@
+<div>
+	<div data-dojo-attach-point="mask" class="mask_widget" style="display:none">
+			<img src="images/loading-1.gif"><br>
+			<b>Realizando Buffer ...</b>
+	</div>
+	<table>
+		<tr>
+			<td field="fieldName">
+				<h3><i class="icon ion-android-hand"></i> TENGA EN CUENTA QUE:</h3>
+				<ul>
+					<li>
+						Puede usar cualquier capa de DATOS ALFANUMERICOS, o de la categoria Cartografía Base en DATOS ESPACIALES o archivos externos que se carguen al mapa.
+					</li>
+					<li>
+						El buffer se hace sobre las entidades visibles en pantalla y no sobre el total que tenga la capa.
+					</li>
+				</ul>
+			</br>
+		  	</td>
+		</tr>
+		<tr>
+		  <td field="fieldName" widtd="70%">
+		  	</br>
+		  	<label>Seleccione una capa:</label>
+		  	</br>
+		  	<div id="divBasico"></div>
+		  </td>
+		</tr>
+		<tr>
+		  <td field="fieldName" widtd="70%">
+		  	<label>Unidad de Distancía:</label>
+		  	</br>
+			<select data-dojo-type="dijit/form/FilteringSelect" id="calAtrrBuffer" name="calAtrrBufer" style="width: 100%">
+				<option value="UNIT_METER">Metros</option>
+			    <option value="UNIT_KILOMETER" selected>Kilometros</option>
+			</select>
+		  </td>
+		</tr>
+		<tr>
+		  <td field="fieldName" widtd="70%">
+		  	<label>Cantidad:</label>
+		  	</br>
+				<input data-dojo-type="dijit/form/TextBox" id="cantidadBuffer" name="cantidadBuffer" required="true" style="width: 100%"/>
+		  </td>
+		</tr>
+		<tr>
+		  <td field="fieldName" widtd="70%">
+		  	<label>Nombre de la capa de Salida:</label>
+		  	</br>
+				<input data-dojo-type="dijit/form/TextBox" id="nombreBuffer" name="nombreBuffer" required="true" style="width: 100%"/>
+		  </td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td>
+				<button class="buttonBasic" type="button" id="btnBuffer">Generar Buffer</button>
+				<div style="display: none;" id="btnLoading">
+					<!-- <img src="widgets/Buffer/images/loading.gif"> -->
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td field="fieldName" widtd="70%">
+				</br>
+		  		<label><b>Precaución:</b> El buffer generado es temporal y no se
+						guardará en la vista del proyecto.
+				</label>
+		  	</td>
+		</tr>
+	</table>
+</div>
