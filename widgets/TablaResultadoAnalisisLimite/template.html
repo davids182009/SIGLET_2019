@@ -1,0 +1,39 @@
+<div>
+    <div class="TA_borderContainer">
+        <div class="TA_borderContainer_iconos">
+            <div class="panelBottom">
+                <div class="btnTableIcon" id="generarGrafico" title="Exportar a CSV" data-dojo-attach-event="onclick:export2csv">
+                    <img src="widgets/TablaAtributos/images/descargar-02.png">
+                </div>
+                <div class="btnTableIcon" id="LimpiarSelect" title="Limpiar Selección" data-dojo-attach-event="onclick:clearSelection">
+                    <img src="widgets/TablaAtributos/images/seleccion-quitar-02.png">
+                </div>
+                <b class="tituloCapa" id="nombreCapa"></b>
+            </div>
+        </div>
+        <div class="TA_borderContainer_formulario">
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'" style="width: 100%;">
+                <label for="lastField">Buscar:</label>
+                <input id="lastField" name="last" class="jimu-input" placeHolder="Digite una palabra" data-dojo-attach-point="inputParametroBusqueda">
+                <button class="buttonBasic" type="button" id="submit" data-dojo-attach-event="onclick:buscar" >Buscar</button>
+                <button class="buttonBasic" type="button" id="reset" data-dojo-attach-event="onclick:limpiar">Limpiar</button>
+            </div>
+        </div>
+        <div class="TA_borderContainer_tabla">
+            <h4>Intersección</h4>
+            <div class="dataTableBox" data-dojo-attach-point="tablaNodeA">
+
+            </div>
+            <h4>Buffer</h4>
+            <div class="dataTableBox" data-dojo-attach-point="tablaNodeB">
+
+            </div>
+        </div>
+        <div class="TA_borderContainer_persistencia">
+            <h4>Guardar Resultados en el Sistema</h4>
+            <label for="numeroSolicitud">Numero Solicitud</label>
+            <input id="numeroSolicitud" name="numeroSolicitud" placeHolder="Digite numero Solicitud" data-dojo-attach-point="inputNumeroSolicitud">
+            <button class="buttonBasic" type="button" id="submit" data-dojo-attach-event="onclick:persistirResultados" >Guardar</button>
+        </div>
+    </div>
+</div>

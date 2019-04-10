@@ -1,0 +1,62 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "rings": [
+          [
+            [
+              -74.15863644310161, 
+              6.088293741981204
+            ], 
+            [
+              -74.16006411970511, 
+              6.156822218949117
+            ], 
+            [
+              -74.07750791625728, 
+              6.223919089794265
+            ], 
+            [
+              -73.96590010162936, 
+              6.189658780829518
+            ], 
+            [
+              -73.87595647560897, 
+              6.095432124998695
+            ], 
+            [
+              -74.15863644310161, 
+              6.088293741981204
+            ]
+          ]
+        ]
+      }, 
+      "attributes": {
+        "Id": 0, 
+        "FID": 0
+      }
+    }
+  ], 
+  "fieldAliases": {
+    "Id": "Id", 
+    "FID": "FID"
+  }, 
+  "fields": [
+    {
+      "alias": "FID", 
+      "type": "esriFieldTypeOID", 
+      "name": "FID"
+    }, 
+    {
+      "alias": "Id", 
+      "type": "esriFieldTypeInteger", 
+      "name": "Id"
+    }
+  ], 
+  "displayFieldName": "", 
+  "spatialReference": {
+    "wkid": 4686, 
+    "latestWkid": 4686
+  }, 
+  "geometryType": "esriGeometryPolygon"
+}

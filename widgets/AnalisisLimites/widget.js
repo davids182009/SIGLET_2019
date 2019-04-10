@@ -50,8 +50,10 @@ define([
     "esri/request",
     "esri/layers/LayerSource",
     "widgets/TablaAtributos/widget",
+    "widgets/TablaResultadoAnalisisLimite/widget",
     "dojo/dom-style",
-    "dijit/Dialog"
+    "dijit/Dialog",
+    "dojo/promise/all"
 ],
   function(declare,
     _WidgetBase,
@@ -89,8 +91,10 @@ define([
     esriRequest,
     LayerSource,
     TablaAtributos,
+    TablaResultadoAnalisisLimite,
     domStyle,
-    Dialog
+    Dialog,
+    all
   ) {
 
     /**
@@ -123,9 +127,12 @@ define([
       estaAnalizandoLimites: false,
       tablaAtributosMunicipios: null,
       tablaAtributosGrilla: null,
+      tablaResultadoAnalisis:null,
       URLGeoProcess: 'http://172.17.3.142:6080/arcgis/rest/services/FLET/Certificaciones_Nuevo/GPServer/Certificaciones',
       jobNumber: null,
       GeoProcessThread: 0,
+      datosAnalisis:{},
+      datosMunicipiosCercanos:{},
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -167,8 +174,13 @@ define([
             new Color([255, 255, 255]), 2), new Color([255, 10, 10, 1])
         );
         this.map.addLayer(this.layer);
-        //CREACION DE VENTANAS DE TABLAS DE ATRIBUTOS
-        this.tablaAtributosMunicipios = registry.byId(
+        //CREACION DE VENTANAS DE TABLAS DE RESULTADO ANALISIS
+        this.tablaResultadoAnalisis = registry.byId('Widget_TablaResultadoAnalisisLimite');
+        if(this.tablaResultadoAnalisis == undefined){
+          this.tablaResultadoAnalisis = new TablaResultadoAnalisisLimite();
+          this.tablaResultadoAnalisis.floatingPane.hide();
+        }
+        /* this.tablaAtributosMunicipios = registry.byId(
           'Widget_TablaAtributosAnalisisMuni');
         if (this.tablaAtributosMunicipios == undefined)
           this.tablaAtributosMunicipios = new TablaAtributos({
@@ -185,7 +197,7 @@ define([
             positionTop: 160,
             positionLeft: 210
           });
-        this.tablaAtributosGrilla.floatingPane.hide();
+        this.tablaAtributosGrilla.floatingPane.hide(); */
       },
       /**
        * Funcion del ciclo de vida del Widget en Dojo,se dispara despues
@@ -255,11 +267,6 @@ define([
         if (capaSelecionada.length > 0) {
           targetCapaWidget = registry.byId(this.listadoCapas.get(
             capaSelecionada).idWidget);
-
-          console.log("ESTA ES LA CAPA QUE MAYRA DICE QUE NO");
-          console.log(targetCapaWidget);
-          console.log("BOTON REMOVER");
-          console.log(this.btnRemove);
           dojo.style(this.btnRemove, "visibility", "visible");
 
           //OBTENER ALIAS DE CAMPOS
@@ -429,14 +436,12 @@ define([
         let tamano = features.length;
         let geoprocessor;
         if (tamano != 0) {
-          this.estaAnalizandoLimites = true;
+          /* this.estaAnalizandoLimites = true;
           domStyle.set(this.mask, 'display', 'block');
           var featuresGraphics = [];
           var featureSet = new FeatureSet();
-
           for (var i = 0; i < features.length; i++) {
             featuresGraphics.push(features[i].graphic);
-            // console.log(features[i].graphic);
           }
           console.log(featuresGraphics);
           featureSet.features = featuresGraphics;
@@ -453,7 +458,12 @@ define([
           }
           console.log(featureSet);
           geoprocessor.submitJob(params, lang.hitch(this, this.procesarResultadoGeoProceso),
-            this.estatusProceso);
+            this.estatusProceso); */
+          let infoJob = {
+            url_analisis : 'http://localhost:8080/SIGLET_2019/geoproceso/siglet_int_munic_1554298142.json',
+            url_cercanos : 'http://localhost:8080/SIGLET_2019/geoproceso/siglet_buffer_int_1554298142.json'
+          };
+          this.procesarResultadoGeoProceso(infoJob)
         } else {
           this.generarDialog(
             'Debe seleccionar al menos una geometría para realizar el análisis.'
@@ -464,7 +474,28 @@ define([
         console.log("ESTATUS PROCESO...");
         console.log(jobInfo.jobStatus);
       },
-      procesarResultadoGeoProceso: function(jobInfo) {
+      procesarResultadoGeoProceso: function(jobInfo) {        
+        let requestURLAnalisis = request(jobInfo.url_analisis,{ handleAs: "json"}).then(function(data){
+          return data;
+        },function(err){
+          return err;
+        });
+        let requestURLCercanos = request(jobInfo.url_cercanos,{ handleAs: "json"}).then(function(data){
+          return data;
+        },function(err){
+          return err;
+        });
+        all([requestURLAnalisis,requestURLCercanos]).then(lang.hitch(this,function(result){
+          console.log(result);
+          for(let i=0; i<result.length ; i++){
+            if(result[i].fieldAliases.BUFF_DIST == undefined)
+              this.resultado2Capa(result[i],'PRIMARIO');
+            else
+              this.resultado2Capa(result[i],'CERCANOS');
+          }
+        }));
+      },
+      /* procesarResultadoGeoProceso: function(jobInfo) {
         console.log("EXITOO");
         this.GeoProcessThread = 0;
         this.checkStatusAnalisis();
@@ -520,7 +551,7 @@ define([
             lang.hitch(this, this.procesarAnalisisGrilla),
             this.falloResultado2Capa);
         }));
-      },
+      }, */
       procesarAnalisisMunicipios: function(resultados) {
         this.resultado2Capa(resultados, 'MUNICIPIO');
       },
@@ -528,6 +559,7 @@ define([
         this.resultado2Capa(resultados, 'GRILLA');
       },
       resultado2Capa: function(resultados, tipo) {
+        this.jobNumber++;
         let featureCollection = {
           layerDefinition: {
             geometryType: resultados.geometryType,
@@ -548,6 +580,7 @@ define([
             spatialReference: resultados.spatialReference
           }
         };
+        console.log(featureCollection);
         let capaResultado = new FeatureLayer(featureCollection, {
           id: this._generateRandomId()
         });
@@ -566,9 +599,10 @@ define([
           '.layerexplorer')[0]);
         capaWidget = contenedorCapasWidget.addResultadoGeoProceso(layer,
           job);
+        this.tablaResultadoAnalisis.setDataFeatures(result,capaWidget);
         //console.log(layer);
         //console.log(capaWidget);
-        switch (job.subTipo) {
+        /* switch (job.subTipo) {
           case 'AnalisisLimites_MUNICIPIO':
             console.log('TABLA DE ATRIBUTOS MUNICIPIO');
             this.tablaAtributosMunicipios.setDataFeatures(result,
@@ -579,7 +613,7 @@ define([
             this.tablaAtributosGrilla.setDataFeatures(result,
               capaWidget);
             break;
-        }
+        } */
         this.GeoProcessThread++;
       },
       _generateRandomId: function() {
