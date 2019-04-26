@@ -289,7 +289,7 @@ define([
               domClass.add(this.opcionTabla, 'nodoOculto');
               this.layer = new WMSLayer(this.infoCapa.URL, {
                 id: '' + this.infoCapa.id,
-                format: "png",       
+                format: "png",
                 visibleLayers: [this.infoCapa.NOMBRECAPA]
               });
               console.log(this.layer);
@@ -313,7 +313,8 @@ define([
                   console.log(event);
                   //this.infoCapa = capasStore.get(event.target.id);
                   console.log(this.infoCapa);
-                  widget = registry.byId('panel_capa_' + this.infoCapa.CAPADOMID);
+                  widget = registry.byId('panel_capa_' + this.infoCapa
+                    .CAPADOMID);
                   console.log(widget);
                   widget.mostrarMensaje({
                     title: '<i style="font-size:1.3em" class="icon ion-alert-circled"></i>' +
@@ -332,7 +333,7 @@ define([
                   });
                   widget.quitarCapa();
                 }
-              }));     
+              }));
           }
           break;
         default:
@@ -695,31 +696,32 @@ define([
         obj.set("checked", false);
         //VERIFICAR SI NO HAY TEMATICAS REPETIDAS EN AREA DE TRABAJO
         //contenedorCapasWidget = registry.byId('ContenerCapas_1');
-        contenedorCapasWidget = registry.byNode(query('.layerexplorer')[0]);
+        contenedorCapasWidget = registry.byNode(query(
+          '.layerexplorer')[0]);
         listaCapas = contenedorCapasWidget.listarCapas();
         contadorTematicas = 0;
-        for (var i = 0; i < listaCapas.length; i++) {
-          if (listaCapas[i].infoCapa.IDDATO == this.infoCapa.IDDATO &&
-            listaCapas[i].infoCapa.IDUNIDADESPACIAL == this.infoCapa.IDUNIDADESPACIAL
-          )
-            contadorTematicas++;
-        }
+        // for (var i = 0; i < listaCapas.length; i++) {
+        //   if (listaCapas[i].infoCapa.IDDATO == this.infoCapa.IDDATO &&
+        //     listaCapas[i].infoCapa.IDUNIDADESPACIAL == this.infoCapa.IDUNIDADESPACIAL
+        //   )
+        //     contadorTematicas++;
+        // }
         //INFORMAR A COMPARACION TEMPORAL
-        if (this.tipo == 'B' && contadorTematicas == 1) {
-          if (this.infoCapa.IDUNIDADESPACIAL == 1)
-            sobreNombre = this.infoCapa.DATO + ' [MUNICIPAL]';
-          else
-            sobreNombre = this.infoCapa.DATO + ' [DEPARTAMENTAL]';
-          topic.publish("identificarCapasTematicas", {
-            accion: 'ELIMINAR',
-            name: sobreNombre,
-            IDDATO: this.infoCapa.IDDATO,
-            id: this.infoCapa.IDDATO,
-            idWidget: '' + this.id,
-            IDUNIDADESPACIAL: this.infoCapa.IDUNIDADESPACIAL,
-            idNodoPadre: this.infoCapa.parent
-          });
-        }
+        // if (this.tipo == 'B' && contadorTematicas == 1) {
+        //   if (this.infoCapa.IDUNIDADESPACIAL == 1)
+        //     sobreNombre = this.infoCapa.DATO + ' [MUNICIPAL]';
+        //   else
+        //     sobreNombre = this.infoCapa.DATO + ' [DEPARTAMENTAL]';
+        //   topic.publish("identificarCapasTematicas", {
+        //     accion: 'ELIMINAR',
+        //     name: sobreNombre,
+        //     IDDATO: this.infoCapa.IDDATO,
+        //     id: this.infoCapa.IDDATO,
+        //     idWidget: '' + this.id,
+        //     IDUNIDADESPACIAL: this.infoCapa.IDUNIDADESPACIAL,
+        //     idNodoPadre: this.infoCapa.parent
+        //   });
+        // }
 
       }
       //INFORMAR DESTRUCCION A WIDGET Identificar

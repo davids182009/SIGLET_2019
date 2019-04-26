@@ -53,7 +53,10 @@ define([
     "widgets/TablaResultadoAnalisisLimite/widget",
     "dojo/dom-style",
     "dijit/Dialog",
-    "dojo/promise/all"
+    "dojo/promise/all",
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/graphic"
 ],
   function(declare,
     _WidgetBase,
@@ -94,7 +97,10 @@ define([
     TablaResultadoAnalisisLimite,
     domStyle,
     Dialog,
-    all
+    all,
+    SimpleRenderer,
+    SimpleMarkerSymbol,
+    graphic
   ) {
 
     /**
@@ -127,12 +133,12 @@ define([
       estaAnalizandoLimites: false,
       tablaAtributosMunicipios: null,
       tablaAtributosGrilla: null,
-      tablaResultadoAnalisis:null,
-      URLGeoProcess: 'http://172.17.3.142:6080/arcgis/rest/services/FLET/Certificaciones_Nuevo/GPServer/Certificaciones',
+      tablaResultadoAnalisis: null,
+      URLGeoProcess: 'http://172.17.3.142:6080/arcgis/rest/services/FLET/AnalisisLET2019B/GPServer/AnalisisLET2019A',
       jobNumber: null,
       GeoProcessThread: 0,
-      datosAnalisis:{},
-      datosMunicipiosCercanos:{},
+      datosAnalisis: {},
+      datosMunicipiosCercanos: {},
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -147,7 +153,7 @@ define([
         let layerExplorer = registry.byNode(query('.layerexplorer')[0]);
         let lista = new Array();
         listCapaWidget = layerExplorer.listarCapas();
-        console.log(listCapaWidget);
+        // console.log(listCapaWidget);
         for (i = 0; i < listCapaWidget.length; i++) {
           lista[i] = {
             name: '' + listCapaWidget[i].name,
@@ -175,10 +181,14 @@ define([
         );
         this.map.addLayer(this.layer);
         //CREACION DE VENTANAS DE TABLAS DE RESULTADO ANALISIS
-        this.tablaResultadoAnalisis = registry.byId('Widget_TablaResultadoAnalisisLimite');
-        if(this.tablaResultadoAnalisis == undefined){
+        this.tablaResultadoAnalisis = registry.byId(
+          'Widget_TablaResultadoAnalisisLimite');
+        if (this.tablaResultadoAnalisis == undefined) {
           this.tablaResultadoAnalisis = new TablaResultadoAnalisisLimite();
-          this.tablaResultadoAnalisis.floatingPane.hide();
+          // this.tablaResultadoAnalisis.floatingPane.hide();
+          // console.log(this.tablaResultadoAnalisis.floatingPane.domNode);
+          domClass.add(this.tablaResultadoAnalisis.floatingPane.domNode,
+            "tablaResultadosOculta");
         }
         /* this.tablaAtributosMunicipios = registry.byId(
           'Widget_TablaAtributosAnalisisMuni');
@@ -257,8 +267,8 @@ define([
       _identificar: function(event) {
         /* console.log('Identificar trabajando..');
         console.log(this); */
-        console.log(this.estaEliminando);
-        console.log(this.estaAnalizandoLimites);
+        // console.log(this.estaEliminando);
+        // console.log(this.estaAnalizandoLimites);
         if (this.estaEliminando || this.estaAnalizandoLimites)
           return false;
         let targetLayer = null;
@@ -294,7 +304,7 @@ define([
           json = json.substring(0, (json.length - 1));
           json += '}';
           this.alias = JSON.parse(json);
-          console.log(this.alias);
+          // console.log(this.alias);
 
           switch (targetCapaWidget.tipo) {
             case "A": //CAPA ESPACIAL
@@ -436,16 +446,15 @@ define([
         let tamano = features.length;
         let geoprocessor;
         if (tamano != 0) {
-          /* this.estaAnalizandoLimites = true;
+          this.estaAnalizandoLimites = true;
           domStyle.set(this.mask, 'display', 'block');
           var featuresGraphics = [];
           var featureSet = new FeatureSet();
           for (var i = 0; i < features.length; i++) {
             featuresGraphics.push(features[i].graphic);
           }
-          console.log(featuresGraphics);
+
           featureSet.features = featuresGraphics;
-          console.log(featureSet);
           geoprocessor = new Geoprocessor(
             this.URLGeoProcess
           );
@@ -456,14 +465,8 @@ define([
           let params = {
             json_entrada: featureSet
           }
-          console.log(featureSet);
           geoprocessor.submitJob(params, lang.hitch(this, this.procesarResultadoGeoProceso),
-            this.estatusProceso); */
-          let infoJob = {
-            url_analisis : 'http://localhost:8080/SIGLET_2019/geoproceso/siglet_int_munic_1554298142.json',
-            url_cercanos : 'http://localhost:8080/SIGLET_2019/geoproceso/siglet_buffer_int_1554298142.json'
-          };
-          this.procesarResultadoGeoProceso(infoJob)
+            this.estatusProceso);
         } else {
           this.generarDialog(
             'Debe seleccionar al menos una geometría para realizar el análisis.'
@@ -474,28 +477,34 @@ define([
         console.log("ESTATUS PROCESO...");
         console.log(jobInfo.jobStatus);
       },
-      procesarResultadoGeoProceso: function(jobInfo) {        
-        let requestURLAnalisis = request(jobInfo.url_analisis,{ handleAs: "json"}).then(function(data){
-          return data;
-        },function(err){
-          return err;
-        });
-        let requestURLCercanos = request(jobInfo.url_cercanos,{ handleAs: "json"}).then(function(data){
-          return data;
-        },function(err){
-          return err;
-        });
-        all([requestURLAnalisis,requestURLCercanos]).then(lang.hitch(this,function(result){
-          console.log(result);
-          for(let i=0; i<result.length ; i++){
-            if(result[i].fieldAliases.BUFF_DIST == undefined)
-              this.resultado2Capa(result[i],'PRIMARIO');
-            else
-              this.resultado2Capa(result[i],'CERCANOS');
-          }
-        }));
-      },
-      /* procesarResultadoGeoProceso: function(jobInfo) {
+      // procesarResultadoGeoProceso: function(jobInfo) {
+      //   let requestURLAnalisis = request(jobInfo.url_analisis, {
+      //     handleAs: "json"
+      //   }).then(function(data) {
+      //     return data;
+      //   }, function(err) {
+      //     return err;
+      //   });
+      //   let requestURLCercanos = request(jobInfo.url_cercanos, {
+      //     handleAs: "json"
+      //   }).then(function(data) {
+      //     return data;
+      //   }, function(err) {
+      //     return err;
+      //   });
+      //   all([requestURLAnalisis, requestURLCercanos]).then(lang.hitch(
+      //     this,
+      //     function(result) {
+      //       console.log(result);
+      //       for (let i = 0; i < result.length; i++) {
+      //         if (result[i].fieldAliases.BUFF_DIST == undefined)
+      //           this.resultado2Capa(result[i], 'PRIMARIO');
+      //         else
+      //           this.resultado2Capa(result[i], 'CERCANOS');
+      //       }
+      //     }));
+      // },
+      procesarResultadoGeoProceso: function(jobInfo) {
         console.log("EXITOO");
         this.GeoProcessThread = 0;
         this.checkStatusAnalisis();
@@ -509,14 +518,10 @@ define([
         let urlServidorArchivoJson2 = null;
         let contenidoArchivoMun = null;
 
-        console.log(urlPeticion);
 
         script.get(urlPeticion, {
           jsonp: "callback"
         }).then(lang.hitch(this, function(response) {
-          // console.log("RESPUESTA");
-          // console.log(response);
-
           //SE ARMA LA PRIMERA URL DE LOS ARCHIVOS JSON DE RESPUESTA
           let valorPuntoComa = response.value.url.split(";");
           urlServidorArchivoJson = valorPuntoComa[0];
@@ -530,65 +535,146 @@ define([
           urlServidorArchivoJson2 = urlServidor2 + "/" +
             nombreArchivoJson2;
 
-          console.log(urlServidorArchivoJson);
-          console.log(urlServidorArchivoJson2);
+          // console.log(urlServidorArchivoJson);
+          // console.log(urlServidorArchivoJson2);
 
-          //PETICION ARCHIVO RESULTADO MUNICIPIOS
-          var peticionArchivoMunicipios = esriRequest({
+          // let requestURLAnalisis = request(urlServidorArchivoJson, {
+          //   handleAs: "json"
+          // }).then(function(data) {
+          //   return data;
+          // }, function(err) {
+          //   return err;
+          // });
+          //
+          // let requestURLCercanos = request(
+          //   urlServidorArchivoJson2, {
+          //     handleAs: "json"
+          //   }).then(function(data) {
+          //   return data;
+          // }, function(err) {
+          //   return err;
+          // });
+
+          // console.log(requestURLAnalisis);
+          // console.log(requestURLCercanos);
+
+          // //PETICION ARCHIVO RESULTADO MUNICIPIOS
+          var requestURLAnalisis = esriRequest({
             "url": urlServidorArchivoJson,
             "handleAs": "json"
           });
-          peticionArchivoMunicipios.then(
-            lang.hitch(this, this.procesarAnalisisMunicipios),
-            this.falloResultado2Capa);
+          requestURLAnalisis.then(function(data) {
+            return data;
+          }, function(err) {
+            return err;
+          });
 
           //PETICION ARCHIVO RESULTADO GRILLAS
-          var peticionArchivoGrillas = esriRequest({
+          var requestURLCercanos = esriRequest({
             "url": urlServidorArchivoJson2,
             "handleAs": "json"
           });
-          peticionArchivoGrillas.then(
-            lang.hitch(this, this.procesarAnalisisGrilla),
-            this.falloResultado2Capa);
+          requestURLCercanos.then(function(data) {
+            return data;
+          }, function(err) {
+            return err;
+          });
+
+          all([requestURLAnalisis, requestURLCercanos]).then(lang
+            .hitch(
+              this,
+              function(result) {
+                for (let i = 0; i < result.length; i++) {
+                  if (result[i].fieldAliases.BUFF_DIST ==
+                    undefined) {
+                    this.resultado2Capa(result[i], 'PRIMARIO');
+                  } else {
+                    this.resultado2Capa(result[i], 'CERCANOS');
+                  }
+                }
+              }));
+
         }));
-      }, */
-      procesarAnalisisMunicipios: function(resultados) {
-        this.resultado2Capa(resultados, 'MUNICIPIO');
-      },
-      procesarAnalisisGrilla: function(resultados) {
-        this.resultado2Capa(resultados, 'GRILLA');
       },
       resultado2Capa: function(resultados, tipo) {
         this.jobNumber++;
-        let featureCollection = {
-          layerDefinition: {
-            geometryType: resultados.geometryType,
-            spatialReference: resultados.spatialReference,
-            objectIdField: this.getObjectIdField(resultados.fields),
-            fields: resultados.fields,
-            drawingInfo: {
-              renderer: {
-                type: "simple",
-                symbol: this.simbologiaPolygon
-              }
+        if (tipo == "CERCANOS") {
+          console.log("ES CERCANOS");
+          console.log(resultados);
+          return false;
+          // let symbol = new SimpleFillSymbol();
+          // symbol.setColor(new Color([150, 150, 150, 1]));
+          //
+          // let featureCollection = {
+          //   layerDefinition: {
+          //     geometryType: resultados.geometryType,
+          //     spatialReference: resultados.spatialReference,
+          //     objectIdField: this.getObjectIdField(resultados.fields),
+          //     fields: resultados.fields,
+          //     drawingInfo: {
+          //       renderer: {
+          //         type: "simple",
+          //         symbol: symbol
+          //       }
+          //     },
+          //     name: 'Analisis ' + this.jobNumber + ' - ' + tipo
+          //   },
+          //   featureSet: {
+          //     features: resultados.features,
+          //     geometryType: resultados.geometryType,
+          //     spatialReference: resultados.spatialReference
+          //   }
+          // };
+          //
+          // let capaResultado = new FeatureLayer(featureCollection, {
+          //   id: this._generateRandomId()
+          // });
+
+          // console.log(capaResultado);
+
+        } else {
+          console.log("ES PRIMARIO");
+          console.log(resultados);
+          let symbol = new SimpleFillSymbol();
+          symbol.setColor(new Color([150, 150, 150, 1]));
+          let featureCollection = {
+            layerDefinition: {
+              geometryType: resultados.geometryType,
+              spatialReference: resultados.spatialReference,
+              objectIdField: this.getObjectIdField(resultados.fields),
+              fields: resultados.fields,
+              drawingInfo: {
+                renderer: {
+                  type: "simple",
+                  symbol: symbol
+                }
+              },
+              name: 'Analisis ' + this.jobNumber + ' - ' + tipo
             },
-            name: 'Analisis ' + this.jobNumber + ' - ' + tipo
-          },
-          featureSet: {
-            features: resultados.features,
-            geometryType: resultados.geometryType,
-            spatialReference: resultados.spatialReference
+            featureSet: {
+              features: resultados.features,
+              geometryType: resultados.geometryType,
+              spatialReference: resultados.spatialReference
+            }
+          };
+
+          let capaResultado = new FeatureLayer(featureCollection, {
+            id: this._generateRandomId()
+          });
+          // this.map.addLayer(capaResultado);
+          let job = {
+            name: 'Analisis ' + this.jobNumber + ' - ' + tipo,
+            subTipo: 'AnalisisLimites_' + tipo
           }
-        };
-        console.log(featureCollection);
-        let capaResultado = new FeatureLayer(featureCollection, {
-          id: this._generateRandomId()
-        });
-        let job = {
-          name: 'Analisis ' + this.jobNumber + ' - ' + tipo,
-          subTipo: 'AnalisisLimites_' + tipo
+          this.cargarEnLayerExplorer(capaResultado, job);
         }
-        this.cargarEnLayerExplorer(capaResultado, job);
+
+        // console.log(capaResultado);
+        // let job = {
+        //   name: 'Analisis ' + this.jobNumber + ' - ' + tipo,
+        //   subTipo: 'AnalisisLimites_' + tipo
+        // }
+        // this.cargarEnLayerExplorer(capaResultado, job);
       },
       cargarEnLayerExplorer: function(layer, job) {
         let capaWidget = null;
@@ -599,7 +685,8 @@ define([
           '.layerexplorer')[0]);
         capaWidget = contenedorCapasWidget.addResultadoGeoProceso(layer,
           job);
-        this.tablaResultadoAnalisis.setDataFeatures(result,capaWidget);
+        this.tablaResultadoAnalisis.setDataFeatures(result, capaWidget);
+        domStyle.set(this.mask, 'display', 'none');
         //console.log(layer);
         //console.log(capaWidget);
         /* switch (job.subTipo) {
@@ -653,10 +740,10 @@ define([
         myDialog.show();
       },
       mostrarTablasAtributos: function() {
-        this.tablaAtributosMunicipios.floatingPane.show();
-        this.tablaAtributosMunicipios.floatingPane.bringToTop();
-        this.tablaAtributosGrilla.floatingPane.show();
-        this.tablaAtributosGrilla.floatingPane.bringToTop();
+        this.tablaResultadoAnalisis.floatingPane.show();
+        this.tablaResultadoAnalisis.floatingPane.bringToTop();
+        domClass.replace(this.tablaResultadoAnalisis.floatingPane.domNode,
+          "tablaResultadosVisible", "tablaResultadosOculta");
       }
     });
   });

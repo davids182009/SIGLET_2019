@@ -24,15 +24,11 @@
             <div class="dataTableBox" data-dojo-attach-point="tablaNodeA">
 
             </div>
-            <h4>Buffer</h4>
-            <div class="dataTableBox" data-dojo-attach-point="tablaNodeB">
-
-            </div>
         </div>
         <div class="TA_borderContainer_persistencia">
             <h4>Guardar Resultados en el Sistema</h4>
             <label for="numeroSolicitud">Numero Solicitud</label>
-            <input id="numeroSolicitud" name="numeroSolicitud" placeHolder="Digite numero Solicitud" data-dojo-attach-point="inputNumeroSolicitud">
+            <input id="numeroSolicitud" name="numeroSolicitud" placeHolder="Digite numero Solicitud" maxlength="23" data-dojo-attach-point="inputNumeroSolicitud">
             <button class="buttonBasic" type="button" id="submit" data-dojo-attach-event="onclick:persistirResultados" >Guardar</button>
         </div>
     </div>
