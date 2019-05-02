@@ -115,15 +115,16 @@ define([
       simbologiaPunto: null,
       simbologiaLinea: null,
       simbologiaPoligono: null,
-      positionTop: 130,
-      positionLeft: 202,
+      positionTop: 142,
+      positionLeft: 408,
       titleFloatingPane: 'TABLA DE RESULTADO ANALISIS DE LIMITES',
       tablaNode: [null, null],
       datosEnviarServicio: null,
       jsonEnviarServicio: null,
-      urlServicioBusqueda: 'http://172.28.9.181:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
-      urlServicioPersistencia: 'http://172.28.9.181:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
+      urlServicioBusqueda: 'http://172.28.9.203:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
+      urlServicioPersistencia: 'http://172.28.9.203:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
       numeroSolicitudGlobal: null,
+      tipoSolicitud: null,
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -176,7 +177,7 @@ define([
           dockTo: this.dock, //if you create the floating pane outside of the same function as the dock, you'll need to set as dijit.byId('dock')
           style: 'position:absolute;top:' + this.positionTop +
             'px;left:' + this.positionLeft +
-            'px;width:629px;height:425px;z-index:999 !important',
+            'px;width:795px;height:444px;z-index:999 !important',
           content: this
             //you must set position:absolute; and provide a top and left value (right and bottom DO NOT WORK and will cause the floating pane to appear in strange places depending on browser, for example 125684 pixels right)
             //Why top and left? The position of a floating pane is a relationship between the top-left corner of dojo.window and the top-left corner of the dijit
@@ -263,7 +264,7 @@ define([
           selectionMode: 'extended',
           cellNavigation: false,
           className: 'gridTablaAtributos',
-          rowsPerPage: 6,
+          rowsPerPage: 10,
         }, 'dataGrid_' + typeGrid);
         if (typeGrid == 0)
           this.grid[typeGrid].on("dgrid-select", lang.hitch(this,
@@ -277,6 +278,8 @@ define([
           "ASC");
         // this.floatingPane.show();
         this.floatingPane.bringToTop();
+        console.log("PANEL...");
+        console.log(this.floatingPane);
         domClass.replace(this.floatingPane.domNode,
           "tablaResultadosVisible", "tablaResultadosOculta");
       },
@@ -366,8 +369,8 @@ define([
         let campoSolicitud = dom.byId("numeroSolicitud");
         let numeroSolicitud = null;
 
-        console.log("DATOS VACIOS");
-        console.log(this.datosEnviarServicio);
+        // console.log("DATOS VACIOS");
+        // console.log(this.datosEnviarServicio);
 
         if (this.datosEnviarServicio != null) {
           if (campoSolicitud.textLength != 0) {
@@ -592,7 +595,9 @@ define([
       },
       consultarDatosNumeroSolicitud: function(url, num) {
         //GET
-        request.get(url + num).then(lang.hitch(this, function(
+        request.get(url + num, {
+          handleAs: "json"
+        }).then(lang.hitch(this, function(
             response) {
             if (response.cantidadResultados != 0) {
               this.generateConfirmDialog(
@@ -622,16 +627,42 @@ define([
           resultados_solicitudes: []
         };
 
-        this.datosEnviarServicio.data.map(function(item) {
-          // console.log(item);
-          objResultados.resultados_solicitudes.push({
-            "nombre": item.OBJECTID_1,
-            "codigo_departamento": item.COD_DEPART,
-            "codigo_municipio": item.CODIGO,
-            "no_plancha": item.PLANCHA,
-            "medida": item.PERIMETRO.toFixed(2)
+        console.log("TIPO SOLICITUD...");
+        console.log(this.tipoSolicitud);
+
+        if (this.tipoSolicitud == 1354 || this.tipoSolicitud == 1353) {
+          this.datosEnviarServicio.data.map(function(item) {
+            // console.log(item);
+            objResultados.resultados_solicitudes.push({
+              "nombre": item.OBJECTID_1,
+              "codigo_departamento": item.COD_DEPART,
+              "codigo_municipio": item.CODIGO,
+              "no_plancha": item.PLANCHA,
+              "medida": item.AREA.toFixed(2)
+            });
           });
-        });
+        } else if (this.tipoSolicitud == 1352) {
+          this.datosEnviarServicio.data.map(function(item) {
+            // console.log(item);
+            objResultados.resultados_solicitudes.push({
+              "nombre": item.OBJECTID_1,
+              "codigo_departamento": item.COD_DEPART,
+              "codigo_municipio": item.CODIGO,
+              "no_plancha": item.PLANCHA,
+              "medida": item.LONGITUD_PERIMETRO.toFixed(2)
+            });
+          });
+        } else {
+          this.datosEnviarServicio.data.map(function(item) {
+            // console.log(item);
+            objResultados.resultados_solicitudes.push({
+              "nombre": item.OBJECTID_1,
+              "codigo_departamento": item.COD_DEPART,
+              "codigo_municipio": item.CODIGO,
+              "no_plancha": item.PLANCHA
+            });
+          });
+        }
 
         this.jsonEnviarServicio = JSON.stringify(objResultados);
 
@@ -653,13 +684,6 @@ define([
         );
       },
       countChar: function(event) {
-        // console.log("PRESIONO.....");
-        // console.log(event);
-        // LMRE-20190409-06100
-        // console.log(event.explicitOriginalTarget.textLength);
-        // console.log(event.explicitOriginalTarget.value);
-        // console.log(dom.byId("numeroSolicitud"));
-
         let tamanoActualText = event.explicitOriginalTarget.textLength;
 
         if (tamanoActualText == 4 || tamanoActualText == 15) {
@@ -668,7 +692,6 @@ define([
           let campoSolicitud = dom.byId("numeroSolicitud");
           valorActualText += " " + "-" + " ";
           campoSolicitud.value = valorActualText.toUpperCase();
-
         }
       }
     });

@@ -172,17 +172,8 @@
                     height: 200px;
                 }
                 .widget-TablaAtributos .TA_borderContainer_tabla .gridTablaAtributos{
-                    width: 100%;
                     height: 100%;
                 }
-
-                .widget-TablaAtributos .TA_borderContainer_tabla .dgrid-scroller{
-                    overflow-x: scroll:  !important;
-                }
-
-                /*.widget-TablaAtributos .TA_borderContainer_tabla .dgrid-content.ui-widget-content{
-                    overflow-x: scroll !important;
-                } */
 
                 .widget-TablaAtributos .TA_borderContainer_tabla .dgrid-cell {
                     width: 150px;

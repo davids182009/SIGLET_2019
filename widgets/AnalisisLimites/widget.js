@@ -124,6 +124,8 @@ define([
       EventoIdentify: null,
       layer: null,
       simbologiaPolygon: null,
+      simbologiaLinea: null,
+      simbologiaPunto: null,
       countFeatures: 0,
       features: [],
       limitFeatures: 4,
@@ -139,6 +141,7 @@ define([
       GeoProcessThread: 0,
       datosAnalisis: {},
       datosMunicipiosCercanos: {},
+      tipoGeometria: null,
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -179,6 +182,16 @@ define([
           new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
             new Color([255, 255, 255]), 2), new Color([255, 10, 10, 1])
         );
+        this.simbologiaPunto = new SimpleMarkerSymbol(
+          SimpleMarkerSymbol.STYLE_SQUARE, 10,
+          new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+            new Color([255, 0, 0]), 1),
+          new Color([0, 255, 0, 0.25]));
+        this.simbologiaLinea = new SimpleLineSymbol(
+          SimpleLineSymbol.STYLE_SOLID,
+          new Color([255, 10, 10, 0.85]), 6
+        );
+
         this.map.addLayer(this.layer);
         //CREACION DE VENTANAS DE TABLAS DE RESULTADO ANALISIS
         this.tablaResultadoAnalisis = registry.byId(
@@ -273,8 +286,10 @@ define([
           return false;
         let targetLayer = null;
         let fields = [];
+
         capaSelecionada = this.selectCapas.get('value');
         if (capaSelecionada.length > 0) {
+
           targetCapaWidget = registry.byId(this.listadoCapas.get(
             capaSelecionada).idWidget);
           dojo.style(this.btnRemove, "visibility", "visible");
@@ -287,6 +302,7 @@ define([
               targetLayer = targetCapaWidget.layer;
               break;
             case 'C': //ARCHIVO EXTERNO
+              this.tipoGeometria = targetCapaWidget.layer[0].geometryType;
               fields = targetCapaWidget.layer[0].fields;
               targetLayer = targetCapaWidget.layer[0];
               break;
@@ -313,7 +329,7 @@ define([
                   identifyTask = new IdentifyTask(targetCapaWidget.infoCapa
                     .URL);
                   identifyParams = new IdentifyParameters();
-                  identifyParams.tolerance = 3;
+                  identifyParams.tolerance = 100
                   identifyParams.returnGeometry = true;
                   identifyParams.layerIds = [parseInt(targetCapaWidget.infoCapa
                     .NOMBRECAPA)];
@@ -373,6 +389,7 @@ define([
           map.spatialReference);
       },
       addFeature: function(feature) {
+        let simbologia = null;
         if (this.countFeatures == this.limitFeatures)
           return false;
         if (typeof feature.symbol == 'undefined')
@@ -384,7 +401,15 @@ define([
             return false;
         }
 
-        feature.setSymbol(this.simbologiaPolygon);
+        if (this.tipoGeometria == "esriGeometryPoint") {
+          simbologia = this.simbologiaPunto;
+        } else if (this.tipoGeometria == "esriGeometryPolyline") {
+          simbologia = this.simbologiaLinea;
+        } else {
+          simbologia = this.simbologiaPolygon;
+        }
+
+        feature.setSymbol(simbologia);
         this.layer.add(feature);
         this.ids++;
         this.countFeatures++;
@@ -518,7 +543,6 @@ define([
         let urlServidorArchivoJson2 = null;
         let contenidoArchivoMun = null;
 
-
         script.get(urlPeticion, {
           jsonp: "callback"
         }).then(lang.hitch(this, function(response) {
@@ -537,23 +561,6 @@ define([
 
           // console.log(urlServidorArchivoJson);
           // console.log(urlServidorArchivoJson2);
-
-          // let requestURLAnalisis = request(urlServidorArchivoJson, {
-          //   handleAs: "json"
-          // }).then(function(data) {
-          //   return data;
-          // }, function(err) {
-          //   return err;
-          // });
-          //
-          // let requestURLCercanos = request(
-          //   urlServidorArchivoJson2, {
-          //     handleAs: "json"
-          //   }).then(function(data) {
-          //   return data;
-          // }, function(err) {
-          //   return err;
-          // });
 
           // console.log(requestURLAnalisis);
           // console.log(requestURLCercanos);
