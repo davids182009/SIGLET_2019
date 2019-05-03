@@ -494,8 +494,9 @@ define([
           this.generarDialog('La tabla de atributos esta vacia.');
           return;
         }
-        let ReportTitle = 'Analisis_' + this.capaWidgetSelected.name;
-        let arrData = this.dataStore.data;
+
+        let ReportTitle = 'Analisis_' + this.capaWidgetSelected[0].name;
+        let arrData = this.dataStore[0].data;
         //let arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
         let CSV = '';
         let row = '';
@@ -684,15 +685,30 @@ define([
         );
       },
       countChar: function(event) {
-        let tamanoActualText = event.explicitOriginalTarget.textLength;
 
-        if (tamanoActualText == 4 || tamanoActualText == 15) {
+        if (navigator.userAgent.indexOf("Chrome") != -1) {
+          let tamanoActualText = event.currentTarget.selectionEnd;
 
-          let valorActualText = event.explicitOriginalTarget.value;
-          let campoSolicitud = dom.byId("numeroSolicitud");
-          valorActualText += " " + "-" + " ";
-          campoSolicitud.value = valorActualText.toUpperCase();
+          if (tamanoActualText == 4 || tamanoActualText == 15) {
+
+            let valorActualText = event.currentTarget.value;
+            let campoSolicitud = dom.byId("numeroSolicitud");
+            valorActualText += " " + "-" + " ";
+            campoSolicitud.value = valorActualText.toUpperCase();
+          }
+
+        } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+          let tamanoActualText = event.explicitOriginalTarget.textLength;
+
+          if (tamanoActualText == 4 || tamanoActualText == 15) {
+
+            let valorActualText = event.explicitOriginalTarget.value;
+            let campoSolicitud = dom.byId("numeroSolicitud");
+            valorActualText += " " + "-" + " ";
+            campoSolicitud.value = valorActualText.toUpperCase();
+          }
         }
+
       }
     });
   });
