@@ -150,6 +150,8 @@ define([
        * @function
        */
       postCreate: function() {
+        console.log("WIDGETTTTT");
+        console.log(this.configWidget);
         this.inherited(arguments);
         //OBTENER CAPAS DE EXPLORADOR DE CAPAS
         this.map = registry.byId('EsriMap').map;

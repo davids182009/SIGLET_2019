@@ -121,8 +121,10 @@ define([
       tablaNode: [null, null],
       datosEnviarServicio: null,
       jsonEnviarServicio: null,
-      urlServicioBusqueda: 'http://172.28.9.203:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
-      urlServicioPersistencia: 'http://172.28.9.203:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
+      // urlServicioBusqueda: 'http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
+      // urlServicioPersistencia: 'http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
+      urlServicioBusqueda: 'http://172.28.9.197:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
+      urlServicioPersistencia: 'http://172.28.9.197:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
       numeroSolicitudGlobal: null,
       tipoSolicitud: null,
       /**
@@ -362,7 +364,7 @@ define([
         this.filterEstore = [];
         this.grid.set("query", {});
       },
-      persistirResultados: function(event) {
+      consultarNumeroSolicitudServicio: function(event) {
         let arregloResultados = null;
         let jsonEnviarServicio = null;
         let existe = false;
@@ -612,6 +614,7 @@ define([
                 'La solicitud no posee registros asociados, se almacenaran en la base de datos',
                 1
               );
+              this.tipoSolicitud = response.tipoReferencia;
             }
           }),
           lang.hitch(this, function(error) {
@@ -628,8 +631,11 @@ define([
           resultados_solicitudes: []
         };
 
+        let tipoSolicitud = null;
+        tipoSolicitud = this.tipoSolicitud;
+
         console.log("TIPO SOLICITUD...");
-        console.log(this.tipoSolicitud);
+        console.log(tipoSolicitud);
 
         if (this.tipoSolicitud == 1354 || this.tipoSolicitud == 1353) {
           this.datosEnviarServicio.data.map(function(item) {
@@ -666,6 +672,9 @@ define([
         }
 
         this.jsonEnviarServicio = JSON.stringify(objResultados);
+        console.log("JSON ENVIO SERVICIO");
+        console.log(this.jsonEnviarServicio);
+        this.tipoSolicitud = null;
 
         //POST
         request.post(urlServicios, {

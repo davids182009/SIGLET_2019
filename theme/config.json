@@ -9,7 +9,8 @@
       "display": "leftColumn",
       "icon": "icon.png",
       "closable": false,
-      "openOnLoad": true
+      "openOnLoad": true,
+      "urlServicio": "http://172.17.3.53:8080/ADMINSERV/AdminGeoApplication/AdminGeoWebServices/getTablaContenido/"
     },
     {
       "type": "single",

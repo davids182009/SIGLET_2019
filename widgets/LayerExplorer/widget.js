@@ -87,6 +87,7 @@ define([
       tree: null,
       treeTematico: null,
       treeTabs: null,
+      urlAdminServicios: null,
       idExternos: 99000,
       ContentCapasDndTarget: {
         idTarget: '',
@@ -103,6 +104,9 @@ define([
        * @memberOf ContentCapas
        */
       postCreate: function() {
+        console.log("WIDGET LAYEREXPLORER...");
+        console.log(this.configWidget);
+        this.urlAdminServicios = this.configWidget.urlServicio;
         this.inherited(arguments);
         domGeom.boxModel = "border-box";
 
@@ -218,7 +222,7 @@ define([
          */
         //request.get('http://172.17.3.50:8080/adminalfa/AdminGeoApplication/AdminGeoWebServices/getTablaContenido/',{
         request.get(
-          'http://172.17.3.53:8080/ADMINSERV/AdminGeoApplication/AdminGeoWebServices/getTablaContenido/', {
+          this.urlAdminServicios, {
             handleAs: 'json'
           }).then(lang.hitch(this, function(tablaAdmonServ) {
           /**
