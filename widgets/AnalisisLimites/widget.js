@@ -696,6 +696,7 @@ define([
           job);
         this.tablaResultadoAnalisis.setDataFeatures(result, capaWidget);
         domStyle.set(this.mask, 'display', 'none');
+        this.mostrarTablasAtributos();
         //console.log(layer);
         //console.log(capaWidget);
         /* switch (job.subTipo) {
