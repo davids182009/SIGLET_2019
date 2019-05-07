@@ -171,13 +171,19 @@
                     width: 100%;
                     height: 200px;
                 }
-                .widget-TablaAtributos .TA_borderContainer_tabla .gridTablaAtributos{
+                .widget-TablaAtributos .TA_borderContainer_tabla .dgrid-scroller{
+                    height: 150px !important;
+                    top: 22px !important;
+                    margin: 0px !important;
+                }
+
+               /*  .widget-TablaAtributos .TA_borderContainer_tabla .gridTablaAtributos{
                     height: 100%;
                 }
 
                 .widget-TablaAtributos .TA_borderContainer_tabla .dgrid-cell {
                     width: 150px;
-                }
+                } */
             .widget-TablaAtributos .TA_borderContainer_persistencia{
                 -webkit-box-flex:50px;
                 -ms-flex:0 0 50px;
