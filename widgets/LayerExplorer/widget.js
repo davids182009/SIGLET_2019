@@ -104,8 +104,6 @@ define([
        * @memberOf ContentCapas
        */
       postCreate: function() {
-        console.log("WIDGET LAYEREXPLORER...");
-        console.log(this.configWidget);
         this.urlAdminServicios = this.configWidget.urlServicio;
         this.inherited(arguments);
         domGeom.boxModel = "border-box";

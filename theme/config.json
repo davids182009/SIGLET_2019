@@ -19,7 +19,10 @@
       "version": "1.0",
       "uri": "widgets/AnalisisLimites",
       "display": "leftColumn",
-      "icon": "acto-admin.png"
+      "icon": "acto-admin.png",
+      "urlServicio": "http://172.17.3.142:6080/arcgis/rest/services/FLET/AnalisisLET2019B/GPServer/AnalisisLET2019A",
+      "urlServicio2": "http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/buscar/",
+      "urlServicio3": "http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar"
     },
     {
       "type": "group",
@@ -32,7 +35,8 @@
           "version": "1.0",
           "uri": "widgets/Identificar",
           "display": "leftColumn",
-          "icon": "identificar.png"
+          "icon": "identificar.png",
+          "urlServicio": "null"
         },
         {
           "id": 4,
@@ -40,7 +44,8 @@
           "version": "1.0",
           "uri": "widgets/SeleccionEspacial",
           "display": "leftColumn",
-          "icon": "seleccionar.png"
+          "icon": "seleccionar.png",
+          "urlServicio": "null"
         },
         {
           "id": 5,
@@ -48,7 +53,8 @@
           "version": "2.0",
           "uri": "widgets/ConsultaSimple",
           "display": "leftColumn",
-          "icon": "consulta-simple.png"
+          "icon": "consulta-simple.png",
+          "urlServicio": "null"
         },
         {
           "id": 30,
@@ -56,7 +62,8 @@
           "version": "1.0",
           "uri": "widgets/ConsultaAvanzada",
           "display": "leftColumn",
-          "icon": "consulta-simple.png"
+          "icon": "consulta-simple.png",
+          "urlServicio": "null"
         }
       ]
     },
@@ -73,7 +80,8 @@
           "display": "leftColumn",
           "icon": "dibujar.png",
           "top": "30px",
-          "left": "500px"
+          "left": "500px",
+          "urlServicio": "null"
         },
         {
           "id": 7,
@@ -81,7 +89,8 @@
           "version": "1.0",
           "uri": "widgets/Medir",
           "display": "leftColumn",
-          "icon": "medir.png"
+          "icon": "medir.png",
+          "urlServicio": "null"
         },
         {
           "id": 11,
@@ -89,21 +98,24 @@
           "version": "1.0",
           "uri": "widgets/TransformacionCoordenadas",
           "display": "leftColumn",
-          "icon": "identificar.png"
+          "icon": "identificar.png",
+          "urlServicio": "null"
         }, {
           "id": 71,
           "name": "Ubicar mediante coordenada",
           "version": "1.0",
           "uri": "widgets/LocateCoordinate",
           "display": "leftColumn",
-          "icon": "ubicar-cooredenadas.png"
+          "icon": "ubicar-cooredenadas.png",
+          "urlServicio": "null"
         }, {
           "id": 78,
           "name": "Buffer",
           "version": "1.0",
           "uri": "widgets/Buffer",
           "display": "leftColumn",
-          "icon": "identificar.png"
+          "icon": "identificar.png",
+          "urlServicio": "http://172.17.3.142:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer"
         }
       ]
     },
@@ -118,7 +130,9 @@
           "version": "1.0",
           "uri": "widgets/AdicionarDatos",
           "display": "leftColumn",
-          "icon": "icon.png"
+          "icon": "icon.png",
+          "urlServicio": "https://www.arcgis.com/sharing/rest/content/features/generate",
+          "urlServicio2": "http://utility.arcgis.com/sharing/kml"
         }
       ]
     },
@@ -132,7 +146,8 @@
           "version": "1.0",
           "uri": "widgets/SalidaGrafica",
           "display": "leftColumn",
-          "icon": "exportar-salida.png"
+          "icon": "exportar-salida.png",
+          "urlServicio": "http://190.85.164.30:6080/arcgis/rest/services/Print/A4_Horizontal/GPServer/Export%20Web%20Map"
         }
       ]
     },
@@ -143,7 +158,8 @@
       "version": "1.0",
       "uri": "widgets/Help",
       "display": "floatingWindow",
-      "icon": "ayuda.png"
+      "icon": "ayuda.png",
+      "urlServicio": "null"
     }
   ],
   "map": {

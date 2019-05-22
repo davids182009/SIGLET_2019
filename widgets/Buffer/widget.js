@@ -88,6 +88,8 @@ define([
       objFields: null,
       objgeomType: null,
       nombreSalidaBuffer: null,
+      servicioGeometria: null,
+
 
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
@@ -247,10 +249,9 @@ define([
             }
           }
         });
-
+        this.servicioGeometria = this.configWidget.urlServicio;
         var gserver = new GeometryService(
-          // "http://sigotws.igac.gov.co:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer"
-          "http://172.17.3.142:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer"
+          this.servicioGeometria
         );
         this.objFields = capaFeature.fields;
         this.objgeomType = "esriGeometryPolygon";

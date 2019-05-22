@@ -98,9 +98,9 @@ define([
       simbologiaPunto: null,
       simbologiaLinea: null,
       simbologiaPoligono: null,
-      positionTop:130,
-      positionLeft:202,
-      titleFloatingPane:'Tabla de Atributos',
+      positionTop: 130,
+      positionLeft: 202,
+      titleFloatingPane: 'Tabla de Atributos',
       /**
        * Funcion del ciclo de vida del Widget en Dojo, se dispara cuando
        * todas las propiedades del widget son definidas y el fragmento
@@ -111,16 +111,16 @@ define([
       postCreate: function() {
         this.inherited(arguments);
         this.dock = registry.byId('dock');
-        if(this.dock == undefined)
+        if (this.dock == undefined)
           this.dock = new Dock({
             id: 'dock',
             style: 'position:absolute; bottom:0; right:0; height:0px; width:0px; display:none; z-index:0;' //tuck the dock into the the bottom-right corner of the app
           }, domConstruct.create('div', null, win.body()));
 
-       /*  this.dock = new Dock({
-          id: 'dock',
-          style: 'position:absolute; bottom:0; right:0; height:0px; width:0px; display:none; z-index:0;' //tuck the dock into the the bottom-right corner of the app
-        }, domConstruct.create('div', null, win.body())); */
+        /*  this.dock = new Dock({
+           id: 'dock',
+           style: 'position:absolute; bottom:0; right:0; height:0px; width:0px; display:none; z-index:0;' //tuck the dock into the the bottom-right corner of the app
+         }, domConstruct.create('div', null, win.body())); */
         let fixFloatingPane = declare(FloatingPane, {
           postCreate: function() {
             this.inherited(arguments);
@@ -144,7 +144,7 @@ define([
 
 
         this.floatingPane = new fixFloatingPane({
-          id: this.id+'_FP_TablaAtributos',
+          id: this.id + '_FP_TablaAtributos',
           title: this.titleFloatingPane,
           minSize: 300,
           class: 'FP_TablaAtributos',
@@ -154,7 +154,9 @@ define([
           closable: false, //we never want to close a floating pane - this method destroys the dijit
           dockable: true, // yes we want to dock it
           dockTo: this.dock, //if you create the floating pane outside of the same function as the dock, you'll need to set as dijit.byId('dock')
-          style: 'position:absolute;top:'+this.positionTop+'px;left:'+this.positionLeft+'px;width:500px;height:300px;z-index:999 !important',
+          style: 'position:absolute;top:' + this.positionTop +
+            'px;left:' + this.positionLeft +
+            'px;width:500px;height:300px;z-index:999 !important',
           content: this
             //you must set position:absolute; and provide a top and left value (right and bottom DO NOT WORK and will cause the floating pane to appear in strange places depending on browser, for example 125684 pixels right)
             //Why top and left? The position of a floating pane is a relationship between the top-left corner of dojo.window and the top-left corner of the dijit
@@ -194,7 +196,7 @@ define([
         }
         this.capaWidgetSelected = capaWidgetSelected;
         domConstruct.create('div', {
-          id: 'dataGrid_'+this.id
+          id: 'dataGrid_' + this.id
         }, this.tablaNode);
         //TITULOS
         this.columns = {};
@@ -223,7 +225,7 @@ define([
           cellNavigation: false,
           className: 'gridTablaAtributos',
           rowsPerPage: 10,
-        }, 'dataGrid_'+this.id);
+        }, 'dataGrid_' + this.id);
         this.grid.on("dgrid-select", lang.hitch(this, this.resaltarFeatures));
         this.grid.refresh();
         this.floatingPane.show();
@@ -239,8 +241,8 @@ define([
        */
 
       setDataFeaturesObject: function(data) {
-        console.log("EN METODO PERSONALIZADO TABLA...");
-        console.log(data);
+        // console.log("EN METODO PERSONALIZADO TABLA...");
+        // console.log(data);
 
         if (this.grid != null) {
           this.grid.destroy();
@@ -299,7 +301,7 @@ define([
       closePopupNote: function(event) {
         domStyle.set(this.PopupNote, 'display', 'none');
       },
-      buscar:function(event){
+      buscar: function(event) {
         if (this.grid == null)
           return false;
         this.filterEstore = [];
@@ -343,7 +345,7 @@ define([
                 this.map.setExtent(selectExtent);
               }));
             break;
-          case 'C':          
+          case 'C':
             this.capaWidgetSelected.layer[0].clearSelection();
             this.capaWidgetSelected.layer[0].setSelectionSymbol(this.simbologiaPoligono);
             this.capaWidgetSelected.layer[0].selectFeatures(query,
@@ -382,64 +384,65 @@ define([
           case 'E':
             this.capaWidgetSelected.layer.clearSelection();
             break;
-          case 'C':          
+          case 'C':
             this.capaWidgetSelected.layer[0].clearSelection();
             break;
 
         }
       },
       export2csv: function(event) {
-        if (this.dataStore == null){        
+        if (this.dataStore == null) {
           this.generarDialog('La tabla de atributos esta vacia.');
           return;
         }
-        let ReportTitle = 'Analisis_'+this.capaWidgetSelected.name;
+        let ReportTitle = 'Analisis_' + this.capaWidgetSelected.name;
         let arrData = this.dataStore.data;
         //let arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
         let CSV = '';
-        let row = '';        
+        let row = '';
         //This loop will extract the label from 1st index of on array
-        for (var index in arrData[0]) {            
-            //Now convert each value to string and comma-seprated
-            row += index + ',';
+        for (var index in arrData[0]) {
+          //Now convert each value to string and comma-seprated
+          row += index + ',';
         }
-        row = row.slice(0, -1);        
+        row = row.slice(0, -1);
         //append Label row with line break
         CSV += row + '\r\n';
         //1st loop is to extract each row
         for (var i = 0; i < arrData.length; i++) {
-          row = "";          
+          row = "";
           //2nd loop will extract each column and convert it in string comma-seprated
           for (var index in arrData[i]) {
-              row += '"' + arrData[i][index] + '",';
+            row += '"' + arrData[i][index] + '",';
           }
-          row.slice(0, row.length - 1);          
+          row.slice(0, row.length - 1);
           //add a line break after each row
           CSV += row + '\r\n';
         }
-        if (CSV == ''){        
+        if (CSV == '') {
           this.generarDialog('La tabla de atributos esta vacia.');
           return;
-        } 
+        }
         //Generate a file name
         let fileName = "MyReport_";
         //this will remove the blank-spaces from the title and replace it with an underscore
-        fileName += ReportTitle.replace(/ /g,"_"); 
+        fileName += ReportTitle.replace(/ /g, "_");
         //Initialize file format you want csv or xls
-        var uri = 'data:text/csv;charset=iso-8859-1,' + encodeURIComponent(CSV);
+        var uri = 'data:text/csv;charset=iso-8859-1,' +
+          encodeURIComponent(CSV);
         // Now the little tricky part.
         // you can use either>> window.open(uri);
         // but this will not work in some browsers
-        // or you will not get the correct file extension    
-        
+        // or you will not get the correct file extension
+
         //this trick will generate a temp <a /> tag
-        var link = document.createElement("a");    
+        var link = document.createElement("a");
         link.href = uri;
-        
+
         //set the visibility hidden so it will not effect on your web-layout
         link.style = "visibility:hidden";
         link.download = fileName + ".csv";
-        
+
         //this part will append the anchor tag and remove it after automatic click
         document.body.appendChild(link);
         link.click();
@@ -447,10 +450,10 @@ define([
       },
       generarDialog: function(msg) {
         myDialog = new Dialog({
-        title: '<i style="font-size:1.3em" class="icon ion-alert-circled"></i>' +
+          title: '<i style="font-size:1.3em" class="icon ion-alert-circled"></i>' +
             ' <b>EXPORTAR TABLA ATRIBUTOS A CSV</b>',
-        content: msg,
-        style: "width: 400px"
+          content: msg,
+          style: "width: 400px"
         });
         myDialog.show();
       }

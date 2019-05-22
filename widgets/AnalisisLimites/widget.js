@@ -136,7 +136,7 @@ define([
       tablaAtributosMunicipios: null,
       tablaAtributosGrilla: null,
       tablaResultadoAnalisis: null,
-      URLGeoProcess: 'http://172.17.3.142:6080/arcgis/rest/services/FLET/AnalisisLET2019B/GPServer/AnalisisLET2019A',
+      URLGeoProcess: null,
       jobNumber: null,
       GeoProcessThread: 0,
       datosAnalisis: {},
@@ -150,9 +150,10 @@ define([
        * @function
        */
       postCreate: function() {
-        console.log("WIDGETTTTT");
-        console.log(this.configWidget);
+        // console.log("WIDGET ANALISIS LIMITES...");
+        // console.log(this.configWidget);
         this.inherited(arguments);
+        this.URLGeoProcess = this.configWidget.urlServicio;
         //OBTENER CAPAS DE EXPLORADOR DE CAPAS
         this.map = registry.byId('EsriMap').map;
         let layerExplorer = registry.byNode(query('.layerexplorer')[0]);
@@ -198,8 +199,15 @@ define([
         //CREACION DE VENTANAS DE TABLAS DE RESULTADO ANALISIS
         this.tablaResultadoAnalisis = registry.byId(
           'Widget_TablaResultadoAnalisisLimite');
+        console.log("SERVICIOS.....");
+        console.log(this.configWidget.urlServicio2);
+        console.log(this.configWidget.urlServicio3);
         if (this.tablaResultadoAnalisis == undefined) {
           this.tablaResultadoAnalisis = new TablaResultadoAnalisisLimite();
+          this.tablaResultadoAnalisis.urlServicioConsulta = this.configWidget
+            .urlServicio2;
+          this.tablaResultadoAnalisis.urlServicioPersistencia = this.configWidget
+            .urlServicio3;
           // this.tablaResultadoAnalisis.floatingPane.hide();
           // console.log(this.tablaResultadoAnalisis.floatingPane.domNode);
           domClass.add(this.tablaResultadoAnalisis.floatingPane.domNode,
@@ -532,7 +540,7 @@ define([
       //     }));
       // },
       procesarResultadoGeoProceso: function(jobInfo) {
-        console.log("EXITOO");
+        // console.log("EXITOO");
         this.GeoProcessThread = 0;
         this.checkStatusAnalisis();
         this.jobNumber++;

@@ -121,10 +121,8 @@ define([
       tablaNode: [null, null],
       datosEnviarServicio: null,
       jsonEnviarServicio: null,
-      // urlServicioBusqueda: 'http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
-      // urlServicioPersistencia: 'http://172.28.9.45:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
-      urlServicioBusqueda: 'http://172.28.9.197:8080/AdministradorUsuariosWS/WS/solicitud/buscar/',
-      urlServicioPersistencia: 'http://172.28.9.197:8080/AdministradorUsuariosWS/WS/solicitud/analisis/registrar',
+      urlServicioBusqueda: null,
+      urlServicioPersistencia: null,
       numeroSolicitudGlobal: null,
       tipoSolicitud: null,
       /**
@@ -365,6 +363,9 @@ define([
         this.grid.set("query", {});
       },
       consultarNumeroSolicitudServicio: function(event) {
+        this.urlServicioBusqueda = this.urlServicioConsulta;
+        this.urlServicioPersistencia = this.urlServicioPersistencia;
+
         let arregloResultados = null;
         let jsonEnviarServicio = null;
         let existe = false;

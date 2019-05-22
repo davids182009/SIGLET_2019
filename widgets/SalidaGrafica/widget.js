@@ -57,7 +57,7 @@ define([
       tipoPapel: null,
       tipoFormato: null,
       objImpresion: null,
-      URLPrintService: 'http://190.85.164.30:6080/arcgis/rest/services/Print/A4_Horizontal/GPServer/Export%20Web%20Map',
+      URLPrintService: null,
       template: null,
       map: null,
       servicioActivo: null,
@@ -71,6 +71,7 @@ define([
       postCreate: function() {
         this.inherited(arguments);
         this.map = registry.byId('EsriMap').map;
+        this.URLPrintService = this.configWidget.urlServicio;
       },
       /**
        * Funcion del ciclo de vida del Widget en Dojo,se dispara despues
