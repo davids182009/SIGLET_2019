@@ -94,7 +94,7 @@
         },
         {
           "id": 11,
-          "name": "Transformación Coordenadas",
+          "name": "Conversión de Coordenadas",
           "version": "1.0",
           "uri": "widgets/TransformacionCoordenadas",
           "display": "leftColumn",

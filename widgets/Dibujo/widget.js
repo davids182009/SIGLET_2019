@@ -50,9 +50,23 @@ define([
     },
     _createToolbar: function(evt) {
       console.log("EN CREATE TOOLBAR...");
+      let valorBtn = null;
       let mapa = registry.byId('EsriMap').map;
 
-      let valorBtn = evt.target.value;
+      if (navigator.userAgent.indexOf("Chrome") != -1) {
+        if (evt.target.value != undefined) {
+          valorBtn = evt.target.value;
+        } else {
+          valorBtn = evt.srcElement.parentElement.value;
+        }
+      } else {
+        if (evt.originalTarget.value != undefined) {
+          valorBtn = evt.originalTarget.value;
+        } else {
+          valorBtn = evt.target.parentNode.value;
+        }
+      }
+
       this.toolbar = new draw(mapa);
       this.toolbar.on("draw-end", lang.hitch(this, this._addToMap));
       this.toolbar.activate(draw[valorBtn]);

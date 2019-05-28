@@ -132,7 +132,6 @@ define([
     subTipo: '',
     feature: null,
     rangos: null,
-    TEST: '',
 
     /**
      * Funcion del ciclo de vida del Widget en Dojo
@@ -1151,6 +1150,7 @@ define([
       data = event.dataTransfer.getData("text");
     },
     _handleDragEnd: function(event) {
+      let mapaReorganizar = registry.byId('EsriMap').map;
       capas = registry.findWidgets(dom.byId('graphicLayer'));
       console.log(capas);
       console.log('*Origen' + this.id);
@@ -1178,8 +1178,9 @@ define([
         nuevaPosicionCapa = (capas.length + 1) - posicion;
         console.log(nuevaPosicionCapa);
         console.log(widgetDraged);
-        this.map.reorderLayer(this.map.getLayer(widgetDraged.IDCAPA),
-          nuevaPosicionCapa);
+
+        mapaReorganizar.reorderLayer(mapaReorganizar.getLayer(
+          widgetDraged.IDCAPA), nuevaPosicionCapa);
         //this.map.reorderLayer(widgetDraged.layer,nuevaPosicionCapa);
       }), 10);
 
