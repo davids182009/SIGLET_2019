@@ -362,7 +362,7 @@ define([
             case "C": //CAPA ARCHIVO EXTERNO
               let queryFeatures = new Query();
               queryFeatures.geometry = this.pointToExtent(this.map,
-                event.mapPoint, 1);
+                event.mapPoint, 10);
               //query.geometry = event.mapPoint;
               queryFeatures.outFields = ["*"];
               //this.consultaIdentify = targetCapaWidget.layer.selectFeatures(query,
