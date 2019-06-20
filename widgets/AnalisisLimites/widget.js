@@ -128,7 +128,7 @@ define([
       simbologiaPunto: null,
       countFeatures: 0,
       features: [],
-      limitFeatures: 4,
+      limitFeatures: 8,
       ids: 0,
       WidgetFeatureTarget: '0',
       estaEliminando: false,
@@ -288,10 +288,6 @@ define([
        *
        */
       _identificar: function(event) {
-        /* console.log('Identificar trabajando..');
-        console.log(this); */
-        // console.log(this.estaEliminando);
-        // console.log(this.estaAnalizandoLimites);
         if (this.estaEliminando || this.estaAnalizandoLimites)
           return false;
         let targetLayer = null;
@@ -339,7 +335,7 @@ define([
                   identifyTask = new IdentifyTask(targetCapaWidget.infoCapa
                     .URL);
                   identifyParams = new IdentifyParameters();
-                  identifyParams.tolerance = 100
+                  identifyParams.tolerance = 10
                   identifyParams.returnGeometry = true;
                   identifyParams.layerIds = [parseInt(targetCapaWidget.infoCapa
                     .NOMBRECAPA)];
@@ -434,8 +430,6 @@ define([
       ActivateRemoveFeature: function(event) {
         let features = [];
         features = query(".widget-WidgetFeature", this.canvasList);
-        console.log("NUMERO FEATURES");
-        console.log(features);
         if (features.length != 0) {
           if (this.estaEliminando) {
             this.estaEliminando = false;
@@ -472,6 +466,8 @@ define([
           }
         } else {
           this.estaEliminando = false;
+          this.ids = 0;
+          this.countFeatures = 0;
           domClass.remove(this.btnRemove, 'active');
           //dojo.style(this.btnRemove, "visibility", "hidden");
         }
