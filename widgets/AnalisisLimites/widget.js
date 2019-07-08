@@ -758,6 +758,20 @@ define([
         this.tablaResultadoAnalisis.floatingPane.bringToTop();
         domClass.replace(this.tablaResultadoAnalisis.floatingPane.domNode,
           "tablaResultadosVisible", "tablaResultadosOculta");
+      },
+      cambioSelect: function() {
+        let features = [];
+        features = query(".widget-WidgetFeature", this.canvasList);
+        if (features.length != 0) {
+          for (let q = 0; q < features.length; q++) {
+            let idF = features[q].id;
+            let feature2remove = registry.byId(idF);
+            this.layer.remove(feature2remove.graphic);
+            feature2remove.destroy();
+            this.ids = 0;
+            this.countFeatures = 0;
+          }
+        }
       }
     });
   });

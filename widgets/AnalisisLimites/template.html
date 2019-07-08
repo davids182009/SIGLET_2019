@@ -12,6 +12,7 @@
                 <h3 class="SourceDataStep" step="1">Seleccione una capa para analizar elementos</h3>
                 <p>
                     <div data-dojo-attach-point="selectCapas"
+                        data-dojo-attach-event="change: cambioSelect"
                         data-dojo-type="dijit/form/FilteringSelect"
                         data-dojo-props='searchAttr:"name",required:true,intermediateChanges:true'
                         style="display:block;width: 80%;margin:10px auto;"></div>
